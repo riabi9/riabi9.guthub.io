@@ -79,7 +79,7 @@
         .acc-header { background: var(--white); padding: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-head); font-weight: 600; font-size: 1.2rem; transition: var(--transition); }
         .acc-header:hover { background: var(--silver-light); }
         .acc-content { padding: 0 20px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease; background: #fafafa; }
-        .acc-item.active .acc-content { padding: 20px; max-height: 1000px; }
+        .acc-item.active .acc-content { padding: 20px; max-height: 3000px; }
         .acc-content ul { list-style: none; margin-left: 10px; }
         .acc-content li { margin-bottom: 10px; font-size: 0.95rem; }
         .acc-content strong { color: var(--ocean-navy); background: var(--silver-light); padding: 2px 6px; border-radius: 3px; font-family: monospace; display: inline-block; margin-bottom: 4px; }
@@ -96,6 +96,95 @@
         .ind-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,25,47,0.9), transparent); display: flex; align-items: flex-end; padding: 20px; }
         .ind-overlay h3 { color: var(--white); font-size: 1.4rem; text-transform: uppercase; }
         .ind-card:hover img { transform: scale(1.1); }
+
+        /* --- Clickable industry cards + grade dropdown --- */
+        .ind-card { cursor: pointer; border: 2px solid transparent; }
+        .ind-card:focus-visible { outline: 3px solid var(--ocean-navy); outline-offset: 3px; }
+        .ind-overlay { flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 4px; }
+        .ind-cta { display: flex; align-items: center; gap: 6px; color: var(--silver-light); font-family: var(--font-head); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.6px; opacity: 0.9; }
+        .ind-cta .ind-chev { display: inline-block; transition: transform 0.3s ease; }
+        .ind-card.ind-open { border-color: var(--ocean-navy); }
+        .ind-card.ind-open .ind-cta .ind-chev { transform: rotate(180deg); }
+        .ind-card.ind-open .ind-overlay { background: linear-gradient(to top, rgba(10,25,47,0.95), rgba(10,25,47,0.35)); }
+
+        .ind-panel { grid-column: 1 / -1; background: var(--white); border: 2px solid var(--ocean-navy); border-radius: 6px; overflow: hidden; box-shadow: 0 12px 30px rgba(10,25,47,0.12); animation: indPanelIn 0.25s ease; }
+        @keyframes indPanelIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+        .ind-panel-hd { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 22px; background: var(--ocean-navy); color: var(--white); flex-wrap: wrap; }
+        .ind-panel-hd h3 { font-size: 1.15rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--white); }
+        .ind-panel-hd p { font-size: 0.8rem; color: var(--silver-metallic); margin-top: 3px; }
+        .ind-panel-hd-actions { display: flex; align-items: center; gap: 10px; }
+        .ind-panel-close { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.15); color: #fff; font-size: 1.2rem; border: none; cursor: pointer; line-height: 1; display: flex; align-items: center; justify-content: center; }
+        .ind-panel-close:hover { background: rgba(255,255,255,0.3); }
+        .ind-addall-btn { background: var(--silver-metallic); color: var(--ocean-navy); border: 1.5px solid var(--silver-metallic); padding: 7px 15px; border-radius: 20px; font-family: var(--font-head); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.4px; cursor: pointer; transition: var(--transition); white-space: nowrap; }
+        .ind-addall-btn:hover { background: transparent; color: var(--silver-metallic); }
+
+        .ind-panel-tools { padding: 14px 22px 0; }
+        .ind-search { width: 100%; padding: 11px 14px; border: 1px solid var(--silver-metallic); border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem; }
+        .ind-search:focus { outline: none; border-color: var(--ocean-navy); }
+
+        .ind-grade-list { list-style: none; padding: 10px 22px 6px; margin: 0; max-height: 420px; overflow-y: auto; }
+        .ind-grade-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--silver-light); }
+        .ind-grade-row:last-child { border-bottom: none; }
+        .ind-grade-info { min-width: 0; }
+        .ind-grade-code { font-family: monospace; font-weight: 700; color: var(--ocean-navy); background: var(--silver-light); padding: 3px 8px; border-radius: 3px; display: inline-block; font-size: 0.88rem; }
+        .ind-grade-desc { font-size: 0.85rem; color: var(--grey-accent); margin-top: 5px; }
+        .ind-grade-form { font-size: 0.72rem; color: var(--ocean-navy); font-family: var(--font-head); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; margin-top: 5px; opacity: 0.75; }
+        .ind-no-match { padding: 22px 0; text-align: center; color: var(--grey-accent); font-size: 0.9rem; }
+        .ind-panel-ft { padding: 14px 22px 18px; border-top: 1px solid var(--silver-light); display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .ind-panel-ft span { font-size: 0.82rem; color: var(--grey-accent); }
+        .ind-panel-ft a { font-size: 0.82rem; color: var(--ocean-navy); font-weight: 700; text-decoration: underline; cursor: pointer; }
+
+        @media (max-width: 600px) {
+            .ind-grade-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .ind-panel-hd { flex-direction: column; align-items: flex-start; }
+        }
+
+        /* --- Per-grade "in enquiry" counter --- */
+        .ind-count { display: inline-block; margin-left: 8px; background: #e2f4ee; color: #1f7a55; font-family: var(--font-head); font-weight: 700; font-size: 0.66rem; padding: 3px 8px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.4px; vertical-align: middle; }
+        .ind-variant-hint { font-size: 0.72rem; color: var(--ocean-navy); opacity: 0.65; margin-top: 5px; font-style: italic; }
+
+        /* --- Item configurator modal --- */
+        .cfg-box { max-width: 620px; }
+        .cfg-sec { margin-bottom: 22px; }
+        .cfg-sec:last-child { margin-bottom: 0; }
+        .cfg-label { display: block; font-family: var(--font-head); font-weight: 700; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--ocean-navy); margin-bottom: 9px; }
+        .cfg-label .cfg-req { color: #c0392b; }
+        .cfg-hint { font-size: 0.78rem; color: var(--grey-accent); margin-bottom: 10px; }
+        .cfg-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+        .cfg-chip { background: var(--white); color: var(--ocean-navy); border: 1.5px solid var(--silver-metallic); padding: 9px 15px; border-radius: 22px; font-family: monospace; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: var(--transition); }
+        .cfg-chip:hover { border-color: var(--ocean-navy); }
+        .cfg-chip.cfg-on { background: var(--ocean-navy); color: #fff; border-color: var(--ocean-navy); }
+        .cfg-single { display: inline-block; font-family: monospace; font-weight: 700; font-size: 0.9rem; color: var(--ocean-navy); background: var(--silver-light); padding: 8px 14px; border-radius: 4px; }
+        .cfg-box select, .cfg-box input, .cfg-box textarea { width: 100%; padding: 11px 12px; border: 1px solid var(--silver-metallic); border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem; background: #fff; color: var(--ocean-navy); }
+        .cfg-box select:focus, .cfg-box input:focus, .cfg-box textarea:focus { outline: none; border-color: var(--ocean-navy); }
+        .cfg-box textarea { height: 64px; resize: vertical; }
+        .cfg-dims { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .cfg-dims.cfg-dims-2 { grid-template-columns: 1fr 1fr; }
+        .cfg-dims.cfg-dims-1 { grid-template-columns: 1fr; }
+        .cfg-field small { display: block; font-size: 0.7rem; color: var(--grey-accent); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.4px; font-family: var(--font-head); font-weight: 600; }
+        .cfg-qty { display: grid; grid-template-columns: 1fr 130px; gap: 10px; }
+        .cfg-err { color: #c0392b; font-size: 0.82rem; margin-top: 10px; }
+        .cfg-field-error { border-color: #c0392b !important; }
+        .cfg-preview { background: var(--silver-light); border-left: 4px solid var(--ocean-navy); padding: 12px 14px; border-radius: 4px; font-size: 0.85rem; color: var(--ocean-navy); }
+        .cfg-preview b { font-family: monospace; }
+        .cfg-preview span { color: var(--grey-accent); }
+        .cfg-basket { font-size: 0.8rem; color: var(--grey-accent); margin-right: auto; align-self: center; }
+        .cfg-custom { background: none; border: none; color: var(--ocean-navy); font-family: var(--font-head); font-weight: 700; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.4px; text-decoration: underline; cursor: pointer; padding: 0; }
+        .cfg-custom:hover { color: var(--grey-accent); }
+        .rm-custom-cta { display: flex; justify-content: center; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 36px; padding: 22px; background: var(--white); border: 2px dashed var(--silver-metallic); border-radius: 8px; }
+        .bg-silver .rm-custom-cta { background: rgba(255,255,255,0.6); }
+        .rm-custom-cta p { font-size: 0.92rem; color: var(--grey-accent); margin: 0; }
+        .rm-custom-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--ocean-navy); color: #fff; border: 2px solid var(--ocean-navy); padding: 11px 22px; border-radius: 24px; font-family: var(--font-head); font-weight: 700; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.6px; cursor: pointer; transition: var(--transition); white-space: nowrap; }
+        .rm-custom-btn:hover { background: transparent; color: var(--ocean-navy); }
+        .ind-panel-ft .rm-custom-btn { padding: 8px 16px; font-size: 0.68rem; }
+        .non-steel-card .enq-card-actions .rm-custom-btn { padding: 6px 14px; font-size: 0.68rem; }
+        .cfg-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media (max-width: 560px) { .cfg-fields { grid-template-columns: 1fr; } }
+        .cfg-ft { flex-wrap: wrap; }
+        @media (max-width: 560px) {
+            .cfg-dims, .cfg-dims.cfg-dims-2 { grid-template-columns: 1fr 1fr; }
+            .cfg-qty { grid-template-columns: 1fr 110px; }
+        }
 
         /* Contact & Map */
         .contact-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
@@ -114,7 +203,7 @@
 
         /* Footer */
         footer { background-color: var(--ocean-dark); color: var(--silver-metallic); text-align: center; padding: 60px 20px; }
-        footer .footer-logo { max-width: 150px; margin: 0 auto 20px auto; filter: brightness(0) invert(1) opacity(0.8); }
+        footer .footer-logo { max-width: 190px; margin: 0 auto 22px auto; background: var(--white); padding: 14px 18px; border-radius: 8px; box-shadow: 0 6px 18px rgba(0,0,0,0.25); }
 
         /* Responsive */
         @media (max-width: 900px) {
@@ -141,7 +230,18 @@
         .enq-fab-badge { position: absolute; top: -6px; right: -6px; background: var(--silver-metallic); color: var(--ocean-navy); min-width: 23px; height: 23px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 800; font-family: var(--font-head); border: 2px solid #fff; }
         .enq-wa-fab { width: 54px; height: 54px; border-radius: 50%; background: #25D366; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
         .enq-wa-fab:hover { background: #1EBE5D; }
-        @media (max-width: 600px) { .enq-fab-wrap { right: 14px; bottom: 14px; } .enq-fab { width: 50px; height: 50px; } .enq-wa-fab { width: 44px; height: 44px; } }
+        .enq-mail-fab { width: 54px; height: 54px; border-radius: 50%; background: var(--ocean-navy); color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(10,25,47,0.3); border: none; cursor: pointer; transition: var(--transition); }
+        .enq-mail-fab:hover { background: #1d3a63; transform: translateY(-3px); }
+
+        /* Contact section is revealed on demand */
+        #contact.rm-collapsed { display: none; }
+        .rm-contact-close { display: block; margin: 30px auto 0; background: none; border: 2px solid var(--silver-metallic); color: var(--grey-accent); padding: 9px 20px; border-radius: 22px; font-family: var(--font-head); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.6px; cursor: pointer; transition: var(--transition); }
+        .rm-contact-close:hover { border-color: var(--ocean-navy); color: var(--ocean-navy); }
+        .rm-contact-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+        .rm-contact-actions .whatsapp-btn { margin-top: 0; }
+        .rm-email-btn { display: inline-flex; align-items: center; gap: 10px; background-color: var(--ocean-navy); color: #fff; padding: 12px 25px; border-radius: 30px; font-weight: bold; font-family: var(--font-head); border: 2px solid var(--ocean-navy); cursor: pointer; transition: var(--transition); }
+        .rm-email-btn:hover { background: transparent; color: var(--ocean-navy); }
+        @media (max-width: 600px) { .enq-fab-wrap { right: 14px; bottom: 14px; } .enq-fab { width: 50px; height: 50px; } .enq-wa-fab, .enq-mail-fab { width: 44px; height: 44px; } }
 
         /* "+ Add to enquiry" buttons injected into content */
         .enq-add-btn { flex-shrink: 0; background: var(--white); color: var(--ocean-navy); border: 1.5px solid var(--silver-metallic); padding: 6px 14px; border-radius: 20px; font-family: var(--font-head); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.4px; cursor: pointer; transition: var(--transition); white-space: nowrap; }
@@ -260,7 +360,7 @@
                 <li><a href="#products">Products & Grades</a></li>
                 <li><a href="#industries">Industries</a></li>
                 <li><a href="#why-us">Why Us</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#contact" onclick="return rmShowContact(event)">Contact</a></li>
                 <li>
                     <a href="#" class="enq-nav-cart-btn enq-empty" id="enqNavBtn" onclick="enqOpenCart();return false;">
                         Enquiry <span class="enq-badge" id="enqNavBadge">0</span>
@@ -369,18 +469,18 @@
             </div>
 
             <h3 style="text-align: center; margin-top: 50px; color: var(--ocean-navy);">Additional Products & Supplies</h3>
-            <div class="non-steel-grid">
-                <div class="non-steel-card">
+            <div class="non-steel-grid" id="nonSteelGrid">
+                <div class="non-steel-card" data-group="fittings">
                     <h4>Flanges, Fittings & Valves</h4>
                     <p style="font-size: 0.9rem; color: var(--grey-accent);">Available in carbon, stainless, and duplex materials for diverse flow control needs.</p>
                 </div>
-                <div class="non-steel-card">
-                    <h4>Corrugated Panels & Cladding</h4>
-                    <p style="font-size: 0.9rem; color: var(--grey-accent);">Durable facade cladding and roofing solutions for industrial and commercial structures.</p>
+                <div class="non-steel-card" data-group="roofing">
+                    <h4>Roofing, Cladding & Rainwater Systems</h4>
+                    <p style="font-size: 0.9rem; color: var(--grey-accent);">Insulated sandwich panels, profiled and corrugated sheets, composite decking, standing-seam and facade systems, rainwater goods, insulation and fixings.</p>
                 </div>
-                <div class="non-steel-card">
-                    <h4>Industrial Doors & Shutters</h4>
-                    <p style="font-size: 0.9rem; color: var(--grey-accent);">Sectional doors, rolling shutters, and comprehensive spare parts supply.</p>
+                <div class="non-steel-card" data-group="doors">
+                    <h4>Industrial Doors, Shutters & Security</h4>
+                    <p style="font-size: 0.9rem; color: var(--grey-accent);">Insulated sectional doors, glazed full-vision doors, insulated and single-skin rolling shutters, operators, safety equipment, security grilles and spare parts — all made to opening size.</p>
                 </div>
                 <div class="non-steel-card">
                     <h4>Power Generation</h4>
@@ -394,30 +494,31 @@
     <section class="section-padding" id="industries">
         <div class="container">
             <h2 class="section-title">Industries We Serve</h2>
-            <div class="ind-grid">
-                <div class="ind-card">
+            <p style="text-align:center; margin:-30px auto 40px; max-width:700px; color:var(--grey-accent);">Click an industry to see the grades we supply for it &mdash; and add them straight to your enquiry.</p>
+            <div class="ind-grid" id="indGrid">
+                <div class="ind-card" data-industry="construction" role="button" tabindex="0" aria-expanded="false">
                     <img src="cons.webp" alt="Construction Industry">
-                    <div class="ind-overlay"><h3>Construction</h3></div>
+                    <div class="ind-overlay"><h3>Construction</h3><span class="ind-cta">View grades <span class="ind-chev">&#9662;</span></span></div>
                 </div>
-                <div class="ind-card">
+                <div class="ind-card" data-industry="automotive" role="button" tabindex="0" aria-expanded="false">
                     <img src="auto.jfif" alt="Automotive Industry">
-                    <div class="ind-overlay"><h3>Automotive</h3></div>
+                    <div class="ind-overlay"><h3>Automotive</h3><span class="ind-cta">View grades <span class="ind-chev">&#9662;</span></span></div>
                 </div>
-                <div class="ind-card">
+                <div class="ind-card" data-industry="shipbuilding" role="button" tabindex="0" aria-expanded="false">
                     <img src="shipbuilding-shutterstock-397451668.webp" alt="Shipbuilding Industry">
-                    <div class="ind-overlay"><h3>Shipbuilding</h3></div>
+                    <div class="ind-overlay"><h3>Shipbuilding</h3><span class="ind-cta">View grades <span class="ind-chev">&#9662;</span></span></div>
                 </div>
-                <div class="ind-card">
+                <div class="ind-card" data-industry="solar" role="button" tabindex="0" aria-expanded="false">
                     <img src="slor.jfif" alt="Solar Energy">
-                    <div class="ind-overlay"><h3>Solar Energy</h3></div>
+                    <div class="ind-overlay"><h3>Solar Energy</h3><span class="ind-cta">View grades <span class="ind-chev">&#9662;</span></span></div>
                 </div>
-                <div class="ind-card">
+                <div class="ind-card" data-industry="hvac" role="button" tabindex="0" aria-expanded="false">
                     <img src="Industries-hvac.webp" alt="HVAC Industry">
-                    <div class="ind-overlay"><h3>HVAC</h3></div>
+                    <div class="ind-overlay"><h3>HVAC</h3><span class="ind-cta">View grades <span class="ind-chev">&#9662;</span></span></div>
                 </div>
-                <div class="ind-card">
+                <div class="ind-card" data-industry="food" role="button" tabindex="0" aria-expanded="false">
                     <img src="food steel.jfif" alt="Food & Beverage Industry">
-                    <div class="ind-overlay"><h3>Food & Bev</h3></div>
+                    <div class="ind-overlay"><h3>Food &amp; Bev</h3><span class="ind-cta">View grades <span class="ind-chev">&#9662;</span></span></div>
                 </div>
             </div>
         </div>
@@ -438,7 +539,7 @@
     </section>
 
     <!-- Contact & Map -->
-    <section class="section-padding" id="contact">
+    <section class="section-padding rm-collapsed" id="contact">
         <div class="container">
             <h2 class="section-title">Contact R-METAL</h2>
             
@@ -458,11 +559,17 @@
                         <strong>Address:</strong> 20090 Rovido Industriale Milan, Italie
                     </div>
                     
+                    <div class="rm-contact-actions">
+                    <a href="mailto:info@r-metal.it.com" class="rm-email-btn">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
+                        Email Us
+                    </a>
                     <a href="https://wa.me/905347736432" target="_blank" class="whatsapp-btn">
                         <!-- Simple SVG WhatsApp Icon -->
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51h-.57c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                         Chat on WhatsApp
                     </a>
+                    </div>
                 </div>
                 
                 <div class="contact-form-box">
@@ -480,6 +587,8 @@
             <div class="map-container">
                 <iframe src="https://maps.google.com/maps?q=20090%20Rovido%20Industriale%20Milan,%20Italie&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
+
+            <button type="button" class="rm-contact-close" onclick="rmHideContact()">Hide contact details</button>
         </div>
     </section>
 
@@ -504,6 +613,9 @@
     </div>
 
     <div class="enq-fab-wrap">
+        <a class="enq-mail-fab" href="mailto:info@r-metal.it.com" title="Email us">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
+        </a>
         <a class="enq-wa-fab" href="https://wa.me/905347736432" target="_blank" rel="noopener" title="Chat on WhatsApp">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51h-.57c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         </a>
@@ -638,6 +750,31 @@
     <script>
         // Set dynamic year in footer
         document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Contact section — hidden until requested
+        window.rmShowContact = function (ev) {
+            if (ev) ev.preventDefault();
+            const sec = document.getElementById('contact');
+            if (!sec) return false;
+            sec.classList.remove('rm-collapsed');
+            setTimeout(function () {
+                const y = sec.getBoundingClientRect().top + window.pageYOffset - 100;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }, 30);
+            return false;
+        };
+        window.rmHideContact = function () {
+            const sec = document.getElementById('contact');
+            if (!sec) return;
+            sec.classList.add('rm-collapsed');
+            window.scrollTo({ top: Math.max(0, window.pageYOffset - 400), behavior: 'smooth' });
+        };
+        document.addEventListener('DOMContentLoaded', function () {
+            if (location.hash === '#contact') window.rmShowContact();
+            window.addEventListener('hashchange', function () {
+                if (location.hash === '#contact') window.rmShowContact();
+            });
+        });
 
         // Accordion functionality
         function toggleAcc(element) {
@@ -1165,6 +1302,1151 @@ CREATE POLICY "auth_manage_settings" ON site_settings FOR ALL TO authenticated U
                 window.addEventListener('hashchange', () => { if (location.hash === '#admin' && !adminUser) window.enqOpenAdminLogin(); });
             });
         })();
+    </script>
+    <!-- ============================================================
+         CATALOGUE + ITEM CONFIGURATOR
+         · Industry card  -> dropdown of grade families
+         · "Flanges, Fittings & Valves" card -> dropdown of fitting
+           families (ISO 8434 / DIN 2353, flanges, valves)
+         · "Specify & add"  -> pick ONE exact item, form, sizes, qty
+         · "Custom enquiry" button available everywhere
+         Edit the CATALOG object below — it feeds the industry
+         dropdowns AND the Materials & Typical Grades accordion.
+         ============================================================ -->
+    <script>
+    (function () {
+
+        /* ---------- shared option lists (edit once, used everywhere) ---------- */
+        const TUBE_OD = ['4 mm', '5 mm', '6 mm', '8 mm', '10 mm', '12 mm', '14 mm', '15 mm', '16 mm', '18 mm', '20 mm', '22 mm', '25 mm', '28 mm', '30 mm', '35 mm', '38 mm', '42 mm', '1/4"', '3/8"', '1/2"', '5/8"', '3/4"', '1"'];
+        const THREADS  = ['BSPP (G) parallel', 'BSPT (R) taper', 'Metric (M)', 'NPT / NPTF', 'UNF / JIC 37°', 'SAE ORB'];
+        const DASH     = ['-04 (1/4")', '-05 (5/16")', '-06 (3/8")', '-08 (1/2")', '-10 (5/8")', '-12 (3/4")', '-16 (1")', '-20 (1.1/4")', '-24 (1.1/2")', '-32 (2")'];
+        const DN_SIZES = ['DN15 (1/2")', 'DN20 (3/4")', 'DN25 (1")', 'DN32 (1.1/4")', 'DN40 (1.1/2")', 'DN50 (2")', 'DN65 (2.1/2")', 'DN80 (3")', 'DN100 (4")', 'DN125 (5")', 'DN150 (6")', 'DN200 (8")', 'DN250 (10")', 'DN300 (12")', 'DN350 (14")', 'DN400 (16")', 'DN500 (20")', 'DN600 (24")'];
+        const CLASSES  = ['PN6', 'PN10', 'PN16', 'PN25', 'PN40', 'PN63', 'PN100', 'ASME 150#', 'ASME 300#', 'ASME 600#', 'ASME 900#', 'ASME 1500#'];
+        const SCHED    = ['SCH 10', 'SCH 20', 'SCH 40', 'SCH 80', 'SCH 160', 'STD', 'XS', 'XXS'];
+        const PCS      = ['pcs', 'sets', 'boxes', 'metres'];
+        const UNITS    = ['ton', 'kg', 'pcs', 'metres', 'm²', 'coils'];
+        const EXTRA_FORMS = ['Plates', 'Sheets', 'Coils', 'Slit strip', 'Round bar', 'Flat bar', 'Pipe', 'Tube', 'Profiles', 'Fittings'];
+        const AREA     = ['m²', 'metres', 'pcs', 'ton'];
+        const LENGTH   = ['metres', 'pcs', 'ton'];
+        const SHEET_TH = ['0.50 mm', '0.60 mm', '0.70 mm', '0.80 mm', '1.00 mm', '1.20 mm'];
+        const PANEL_INS = ['30 mm', '40 mm', '50 mm', '60 mm', '80 mm', '100 mm', '120 mm', '150 mm', '200 mm'];
+        const FACING_EXT = ['Pre-painted steel 0.50 mm', 'Pre-painted steel 0.60 mm', 'Galvanized steel 0.50 mm', 'Pre-painted aluminium 0.60 mm', 'Aluminium 0.80 mm', 'Stainless AISI 304', 'Alucopper'];
+        const FACING_INT = ['Pre-painted steel 0.40 mm', 'Pre-painted steel 0.50 mm', 'Galvanized steel 0.40 mm', 'Embossed aluminium foil', 'PVC film', 'Stainless AISI 304'];
+        const MATERIALS = ['Pre-painted steel (EN 10169)', 'Galvanized steel FE E250G (Sendzimir)', 'Aluzinc coated steel', 'Pre-painted aluminium', 'Mill-finish aluminium 3105', 'Stainless AISI 304 2B', 'Copper 99.9 (EN 1172)', 'Rheinzink titanium zinc', 'Alucopper'];
+        const DOOR_RAL = ['RAL 9002 (standard)', 'RAL 9006', 'RAL 9007', 'RAL 9016', 'RAL 7016', 'RAL 8017', 'RAL 1013', 'RAL 1015', 'RAL 1021', 'RAL 2004', 'RAL 3000', 'RAL 3004', 'RAL 5002', 'RAL 5010', 'RAL 5012', 'RAL 6001', 'RAL 6005', 'RAL 6009', 'RAL 7001', 'RAL 7011', 'RAL 7015', 'RAL 7035', 'RAL 7038', 'RAL 8003', 'RAL 8014', 'RAL 8024', 'RAL 9005', 'Wood grain — light', 'Wood grain — dark', 'Raw galvanized (unpainted)', 'Other RAL on request'];
+        const DOOR_OP = ['Manual — spring balanced', 'Manual — chain hoist', 'Manual — crank', 'Electric operator 230 V', 'Electric operator 400 V', 'Electric with remote control', 'To be advised'];
+        const WINDLOAD = ['Class 2', 'Class 3', 'Class 4', 'To be advised'];
+        const RWG_SIZES = ['Development 20 cm', 'Development 25 cm', 'Development 28 cm', 'Development 30 cm', 'Development 33 cm', 'Development 40 cm', 'Development 50 cm', 'Ø 80 mm', 'Ø 100 mm', 'Ø 120 mm', '80 × 80 mm', '100 × 100 mm', 'PVC Ø 63 mm', 'PVC Ø 82 mm', 'PVC Ø 100 mm', 'PVC Ø 125 mm', 'Custom development']
+
+        const sel = (key, label, options) => ({ key: key, label: label, type: 'select', options: options });
+        const txt = (key, label, ph) => ({ key: key, label: label, type: 'text', placeholder: ph });
+
+        /* =========================================================
+           THE CATALOG
+           key      : matches data-industry="" / data-group=""
+           label    : title + the "category" stored on the enquiry
+           items[]  :
+             family      row heading
+             variants    the exact choices — customer picks ONE
+             titleMode   'variant' (default, steel) puts the chosen
+                         variant on the enquiry line; 'family' puts
+                         the family name and records the variant as
+                         an attribute (used for fittings/valves)
+             forms       product shape / fitting type
+             fields      extra spec fields (omit for steel — the
+                         dimension fields are then chosen
+                         automatically from the product form)
+           ========================================================= */
+        const CATALOG = {
+            construction: {
+                kind: 'industry',
+                label: 'Construction & Infrastructure',
+                intro: 'Structural, reinforcing and weathering steels for buildings, bridges and civil works.',
+                items: [
+                    { family: 'A36 / S235JR / SS400', variants: ['ASTM A36', 'S235JR', 'S235J0', 'S235J2', 'SS400'], desc: 'General structural steel', forms: ['Plates', 'Sheets', 'Beams', 'Angles', 'Channels', 'Flat bars'] },
+                    { family: 'A572 Gr.50 / S355', variants: ['ASTM A572 Gr.50', 'S355JR', 'S355J0', 'S355J2', 'S355K2'], desc: 'High-strength structural steel', forms: ['Plates', 'Beams', 'Angles', 'Channels'] },
+                    { family: 'S275', variants: ['S275JR', 'S275J0', 'S275J2'], desc: 'Mid-range structural grade for general fabrication', forms: ['Plates', 'Sheets', 'Profiles', 'Flat bars'] },
+                    { family: 'ASTM A992', variants: ['ASTM A992'], desc: 'Wide-flange structural beams', forms: ['IPE beams', 'HEA beams', 'HEB beams', 'W-beams', 'UPN channels'] },
+                    { family: 'Weathering steel', variants: ['ASTM A588', 'Corten A', 'Corten B', 'S355J0WP'], desc: 'Weathering / self-patinating steel', forms: ['Plates', 'Sheets', 'Coils', 'Profiles'] },
+                    { family: 'Rebar', variants: ['ASTM A615 Gr.60', 'B500B', 'B500C', 'BSt500S'], desc: 'Reinforcement for concrete', forms: ['Ribbed bar', 'Coil rebar', 'Welded mesh'] },
+                    { family: 'Pipe & piling', variants: ['ASTM A53 Gr.B', 'API 5L Gr.B', 'S355J2H'], desc: 'Line pipe, casing and piling', forms: ['Welded pipe', 'Seamless pipe', 'Spiral pipe'] },
+                    { family: 'Hollow sections', variants: ['S235JRH', 'S275J0H', 'S355J2H'], desc: 'Hollow sections for frames and trusses', forms: ['SHS square tube', 'RHS rectangular tube', 'CHS round tube'] },
+                    { family: 'Galvanized structural', variants: ['DX51D+Z', 'S250GD+Z', 'S350GD+Z', 'S450GD+Z'], desc: 'Galvanized coil for decking, purlins and light framing', forms: ['Coils', 'Sheets', 'C purlins', 'Z purlins', 'Slit strip'] }
+                ]
+            },
+            automotive: {
+                kind: 'industry',
+                label: 'Automotive',
+                intro: 'Advanced high-strength, forming and engineering steels for body-in-white, chassis and driveline.',
+                items: [
+                    { family: 'Dual-phase (DP)', variants: ['DP590', 'DP780', 'DP980'], desc: 'Dual-phase advanced high-strength steel', forms: ['Cold rolled coil', 'Slit strip', 'Blanks'] },
+                    { family: 'TRIP', variants: ['TRIP690', 'TRIP780'], desc: 'TRIP-assisted AHSS for energy absorption', forms: ['Cold rolled coil', 'Slit strip', 'Blanks'] },
+                    { family: 'Martensitic (MS)', variants: ['MS1200', 'MS1500'], desc: 'Ultra-high-strength martensitic steel', forms: ['Cold rolled coil', 'Slit strip'] },
+                    { family: 'Boron / hot stamping', variants: ['22MnB5', 'Usibor 1500P', '27MnCrB5'], desc: 'Boron steel for hot stamping', forms: ['Coils', 'Al-Si coated blanks', 'Sheets'] },
+                    { family: 'HSLA', variants: ['HSLA340', 'HSLA420', 'HSLA500'], desc: 'High-strength low-alloy grades', forms: ['Hot rolled coil', 'Cold rolled coil', 'Sheets'] },
+                    { family: 'Cold rolled forming', variants: ['DC01', 'DC03', 'DC04', 'DC05', 'DC06'], desc: 'Cold rolled deep-drawing and forming qualities', forms: ['Cold rolled coil', 'Sheets', 'Slit strip'] },
+                    { family: 'Engineering steels', variants: ['SAE 4140 / 42CrMo4', 'SAE 8620', 'SAE 1045 / C45'], desc: 'Quenched, tempered and case-hardening steels', forms: ['Round bar', 'Flat bar', 'Forging stock'] },
+                    { family: 'Spring steels', variants: ['SAE 5160', 'SAE 9260', '51CrV4'], desc: 'Leaf and coil spring steels', forms: ['Flat bar', 'Round bar', 'Strip'] },
+                    { family: 'Bearing steel', variants: ['SAE 52100 / 100Cr6'], desc: 'Through-hardening bearing steel', forms: ['Round bar', 'Tube', 'Rings'] },
+                    { family: 'Exhaust stainless', variants: ['AISI 409', 'AISI 439', 'AISI 441'], desc: 'Ferritic stainless for exhaust systems', forms: ['Coils', 'Sheets', 'Welded tube'] }
+                ]
+            },
+            shipbuilding: {
+                kind: 'industry',
+                label: 'Shipbuilding & Marine',
+                intro: 'Class-approved hull, offshore and cryogenic steels — plus marine profiles and bulb flats.',
+                items: [
+                    { family: 'Normal-strength hull', variants: ['ABS A', 'ABS B', 'ABS D', 'ABS E'], desc: 'Normal-strength hull structural steel', forms: ['Plates', 'Sheets'] },
+                    { family: 'Higher-strength AH/DH/EH 32', variants: ['AH32', 'DH32', 'EH32'], desc: 'Higher-strength hull plate, 315 MPa class', forms: ['Plates'] },
+                    { family: 'Higher-strength AH/DH/EH 36', variants: ['AH36', 'DH36', 'EH36'], desc: 'Higher-strength hull plate, 355 MPa class', forms: ['Plates'] },
+                    { family: 'Bulb flats (HP profiles)', variants: ['HP 80x6', 'HP 100x7', 'HP 120x7', 'HP 140x8', 'HP 160x8', 'HP 180x9', 'HP 200x10', 'HP 220x11', 'HP 240x11', 'HP 260x12', 'HP 280x12', 'HP 300x13', 'HP 340x14', 'HP 370x15', 'HP 430x17'], desc: 'Class-approved bulb flats for stiffeners and frames', forms: ['Bulb flat profile'] },
+                    { family: 'Cryogenic 9% Ni', variants: ['ASTM A353', 'ASTM A553 Type I'], desc: 'Cryogenic steel for LNG tanks', forms: ['Plates'] },
+                    { family: 'Marine stainless', variants: ['AISI 316L (1.4404)', 'AISI 316Ti (1.4571)', 'Duplex 2205 (1.4462)'], desc: 'Corrosion-resistant marine stainless', forms: ['Plates', 'Sheets', 'Pipe', 'Fittings', 'Round bar'] },
+                    { family: 'Offshore EN 10225', variants: ['S355ML', 'S420ML', 'S460ML'], desc: 'Higher strength for offshore structures', forms: ['Plates', 'Profiles', 'Hollow sections'] },
+                    { family: 'S355J2+N', variants: ['S355J2+N'], desc: 'Normalised structural steel for marine fabrication', forms: ['Plates', 'Profiles', 'Flat bars'] }
+                ]
+            },
+            solar: {
+                kind: 'industry',
+                label: 'Solar & Renewable Energy',
+                intro: 'Corrosion-resistant coated and structural steels for mounting systems, trackers and racking.',
+                items: [
+                    { family: 'Structural galvanized', variants: ['S250GD+Z', 'S350GD+Z', 'S390GD+Z', 'S450GD+Z'], desc: 'Structural galvanized grades for racking and trackers', forms: ['Coils', 'Slit strip', 'C profiles', 'Z profiles', 'U profiles'] },
+                    { family: 'Aluzinc / Galvalume', variants: ['DX51D+AZ150', 'DX51D+AZ185', 'S350GD+AZ150'], desc: 'Aluminium-zinc coating for long outdoor life', forms: ['Coils', 'Sheets', 'Roll-formed profiles'] },
+                    { family: 'Zn-Al-Mg', variants: ['ZM310', 'ZM430', 'Magnelis ZM310'], desc: 'Magnesium-alloyed coating for harsh and coastal sites', forms: ['Coils', 'Slit strip', 'Profiles'] },
+                    { family: 'Structural carbon', variants: ['S235JR', 'S275JR', 'S355JR', 'S355J2'], desc: 'General structural steel for frames and foundations', forms: ['Angles', 'Channels', 'Beams', 'Plates', 'Hollow sections'] },
+                    { family: 'Stainless fixings', variants: ['AISI 304 (1.4301)', 'AISI 316L (1.4404)'], desc: 'Clamps, fasteners and coastal mounting parts', forms: ['Sheets', 'Round bar', 'Flat bar', 'Fittings'] },
+                    { family: 'Electrical steels', variants: ['Non-oriented (NO)', 'Grain-oriented (GO)'], desc: 'For inverters, motors and transformers', forms: ['Coils', 'Slit strip', 'Laminations'] }
+                ]
+            },
+            hvac: {
+                kind: 'industry',
+                label: 'HVAC & Ventilation',
+                intro: 'Coated and stainless steels for ducting, air handling units, heat exchangers and enclosures.',
+                items: [
+                    { family: 'Galvanized ducting', variants: ['DX51D+Z', 'DX52D+Z', 'DX53D+Z', 'DX54D+Z'], desc: 'Galvanized coil for ducting and AHU casings', forms: ['Coils', 'Slit strip', 'Sheets'] },
+                    { family: 'Cold rolled sheet', variants: ['DC01', 'DC03', 'DC04'], desc: 'For enclosures, panels and brackets', forms: ['Coils', 'Sheets', 'Slit strip'] },
+                    { family: 'Stainless 304', variants: ['AISI 304 (1.4301)', 'AISI 304L (1.4307)'], desc: 'Hygienic and humid environments', forms: ['Coils', 'Sheets', 'Welded tube', 'Fittings'] },
+                    { family: 'Stainless 316L', variants: ['AISI 316L (1.4404)'], desc: 'Coastal air and chemical exposure', forms: ['Coils', 'Sheets', 'Welded tube', 'Fittings'] },
+                    { family: 'Aluminized steel', variants: ['Aluminized Type 1', 'Aluminized Type 2'], desc: 'Heat and corrosion resistance for flues and burners', forms: ['Coils', 'Sheets'] },
+                    { family: 'Pre-painted (PPGI)', variants: ['DX51D+Z RAL 9002', 'DX51D+Z RAL 9010', 'DX51D+Z custom RAL'], desc: 'Pre-painted coil for visible casings and louvres', forms: ['Coils', 'Sheets', 'Slit strip'] },
+                    { family: 'Heat exchanger metals', variants: ['Copper tube', 'Aluminium fin stock', 'Aluminium coil'], desc: 'Coil and fin materials', forms: ['Tube', 'Fin stock', 'Coils'] }
+                ]
+            },
+            food: {
+                kind: 'industry',
+                label: 'Food & Beverage (Hygienic)',
+                intro: 'Hygienic stainless grades for tanks, process lines, brewery vessels and equipment.',
+                items: [
+                    { family: 'Stainless 304', variants: ['AISI 304 (1.4301)', 'AISI 304L (1.4307)'], desc: 'Tanks, pipework, worktables, dairy equipment', forms: ['Plates', 'Sheets', 'Coils', 'Welded tube', 'Fittings', 'Round bar'] },
+                    { family: 'Stainless 316L', variants: ['AISI 316L (1.4404)', 'AISI 316 (1.4401)'], desc: 'Aggressive cleaning, pharmaceutical WFI systems', forms: ['Plates', 'Sheets', 'Coils', 'Welded tube', 'Seamless tube', 'Fittings'] },
+                    { family: 'Stainless 316Ti', variants: ['AISI 316Ti (1.4571)'], desc: 'Brewery vessels, high-temperature applications', forms: ['Plates', 'Sheets', 'Welded tube'] },
+                    { family: 'Martensitic', variants: ['EN 1.4006 (AISI 410)', 'EN 1.4021 (AISI 420)'], desc: 'Pump shafts and wear parts', forms: ['Round bar', 'Flat bar'] },
+                    { family: 'Knife steels', variants: ['EN 1.4116 (X50CrMoV15)', 'EN 1.4034'], desc: 'Premium knives and cutting blades', forms: ['Strip', 'Flat bar'] },
+                    { family: 'Duplex', variants: ['Duplex 2205 (1.4462)', 'Lean duplex 2304 (1.4362)'], desc: 'High strength and chloride resistance for storage tanks', forms: ['Plates', 'Sheets', 'Pipe'] }
+                ]
+            },
+
+            /* ---------- Roofing, Cladding & Rainwater Systems ---------- */
+            roofing: {
+                kind: 'product',
+                label: 'Roofing, Cladding & Rainwater Systems',
+                intro: 'Insulated PUR/PIR and mineral wool panels, trapezoidal and corrugated sheets, composite decking, concealed-fix and standing-seam roofing, facade systems, rooflights, insulation, rainwater goods and fixings — in pre-painted steel, aluminium, stainless, copper and titanium zinc.',
+                items: [
+                    {
+                        family: 'Insulated roof panels (PUR / PIR)',
+                        desc: 'Sandwich roof panels with high-density foam core, plain or aluminium-faced underside, in rib and tile-effect profiles.',
+                        variantLabel: 'Choose the panel profile',
+                        variants: ['UNI 28', 'UNI 3', 'UNI 5', 'UNI 3 Mono', 'UNI 5 Mono', 'UNI 3 Farm', 'UNI Roof 28', 'UNI Coppo (tile effect)', 'UNI Onda (corrugated)', 'UNI 1000 Curvo (curved)', 'UNI Energy (PV-ready)'],
+                        formLabel: 'Insulation core',
+                        forms: ['PUR — polyurethane', 'PIR — polyisocyanurate'],
+                        fields: [
+                            sel('ins', 'Insulation thickness', PANEL_INS),
+                            sel('ext', 'External facing', FACING_EXT),
+                            sel('int', 'Internal facing', FACING_INT),
+                            txt('ral', 'Colour (RAL)', 'e.g. RAL 9002 / RAL 7016'),
+                            txt('len', 'Panel length (m)', 'e.g. 6.00 — cut to size')
+                        ],
+                        units: AREA, unit: 'm²'
+                    },
+                    {
+                        family: 'Insulated wall, cold-store & fire-rated panels',
+                        desc: 'Wall panels, mineral wool panels with A2-s1,d0 reaction to fire and EI/REI ratings, and cold-room panels for low and medium temperature.',
+                        variantLabel: 'Choose the panel type',
+                        variants: ['UNI Parete (wall)', 'UNI Parete Lana (mineral wool, EI)', 'UNI 5 Lana (mineral wool, REI)', 'UNI Freeze (cold store)'],
+                        formLabel: 'Insulation core',
+                        forms: ['PUR — polyurethane', 'PIR — polyisocyanurate', 'Mineral wool — A2-s1,d0'],
+                        fields: [
+                            sel('ins', 'Insulation thickness', PANEL_INS),
+                            sel('ext', 'External facing', FACING_EXT),
+                            sel('int', 'Internal facing', FACING_INT),
+                            sel('fire', 'Fire rating required', ['Not required', 'EI 30', 'EI 60', 'EI 120', 'REI 30', 'REI 60', 'REI 120']),
+                            txt('ral', 'Colour (RAL)', 'e.g. RAL 9010'),
+                            txt('len', 'Panel length (m)', 'e.g. 4.00')
+                        ],
+                        units: AREA, unit: 'm²'
+                    },
+                    {
+                        family: 'Trapezoidal & corrugated profiled sheets',
+                        desc: 'Roof and wall profiles for industrial, commercial and agricultural buildings, including tile-effect profiles.',
+                        variantLabel: 'Choose the profile',
+                        variants: ['Genus Coppo (tile effect)', 'Genus Tegola', 'Genus 1000', 'Genus 2000', 'Genus 2007', 'Genus 28', 'Genus 5', 'Genus 30', 'Genus 45', 'Genus 800', 'Genus 900', 'Genus 950', 'Genus GR6/35', 'Onda 76/18 (corrugated)'],
+                        formLabel: 'Material & finish',
+                        forms: MATERIALS,
+                        fields: [
+                            sel('th', 'Sheet thickness', SHEET_TH),
+                            sel('coat', 'Coating', ['Polyester 25 µm (standard)', 'PVDF', 'Plastisol', 'Mill finish / none', 'Anti-condensation backing']),
+                            txt('ral', 'Colour (RAL)', 'e.g. RAL 3009 / RAL 7016'),
+                            txt('len', 'Sheet length (m)', 'e.g. 6.00 — cut to size'),
+                            txt('area', 'Covering width / quantity of bays', 'optional')
+                        ],
+                        units: AREA, unit: 'm²'
+                    },
+                    {
+                        family: 'Composite floor decking sheets',
+                        desc: 'Structural decking profiles for composite concrete floors and permanent formwork.',
+                        variantLabel: 'Choose the profile',
+                        variants: ['Genus 55', 'Genus 55 S.C.', 'Genus 60', 'Genus 73', 'Genus 73 S.C.', 'Genus 153 positive', 'Genus 153 negative', 'Genus 160 positive', 'Genus 160 negative'],
+                        formLabel: 'Material & finish',
+                        forms: ['Galvanized steel (Sendzimir)', 'Aluzinc coated steel', 'Pre-painted steel'],
+                        fields: [
+                            sel('th', 'Sheet thickness', SHEET_TH),
+                            txt('span', 'Support spacing (cm)', 'e.g. 200'),
+                            txt('slab', 'Concrete cover (cm)', 'e.g. 5'),
+                            txt('len', 'Sheet length (m)', 'e.g. 6.00')
+                        ],
+                        units: AREA, unit: 'm²'
+                    },
+                    {
+                        family: 'Concealed-fix & standing-seam roofing',
+                        desc: 'Secret-fix profiles and seamed roof systems, including PV-integration profiles and acoustic/anti-condensation backing.',
+                        variantLabel: 'Choose the system',
+                        variants: ['Genus 330', 'Genus 460', 'Perfect Evolution 478', 'Perfect Staf', 'Perfect Sound', 'Double standing seam', 'Angular seam', 'Batten roll joint', 'Genus Integra (PV)', 'Genus Integra Plus (PV)'],
+                        formLabel: 'Material & finish',
+                        forms: MATERIALS,
+                        fields: [
+                            sel('th', 'Thickness', SHEET_TH),
+                            txt('dev', 'Coil development / bay width (mm)', 'e.g. 430 / 530 / 600'),
+                            txt('ral', 'Colour (RAL)', 'e.g. RAL 7016'),
+                            txt('len', 'Bay length (m)', 'e.g. 8.00'),
+                            sel('sub', 'Substructure required', ['Not required', 'Perfect Prime brackets', 'Perfect Solar brackets', 'Timber battens', 'To be advised'])
+                        ],
+                        units: AREA, unit: 'm²'
+                    },
+                    {
+                        family: 'Facade cladding systems',
+                        desc: 'Concealed-fix slats, shingles, seamed and profiled facade panels, plus perforated and embossed sheets for custom facades.',
+                        variantLabel: 'Choose the system',
+                        variants: ['Genus Wall slat', 'Horizontal slats', 'Cantilever slats', 'Interlocking slats', 'Large shingles', 'Small shingles', 'Angular-seam facade', 'Corrugated facade profile', 'Trapezoidal facade profile', 'Perforated / embossed sheet'],
+                        formLabel: 'Material & finish',
+                        forms: MATERIALS,
+                        fields: [
+                            sel('th', 'Thickness', SHEET_TH),
+                            txt('mod', 'Module width (mm)', 'e.g. 200 / 300'),
+                            txt('ral', 'Colour (RAL)', 'e.g. RAL 9007'),
+                            txt('len', 'Element length (m)', 'e.g. 3.00'),
+                            sel('finish', 'Surface treatment', ['Plain', 'Perforated', 'Embossed', 'Perforated + embossed']),
+                            sel('sub', 'Support brackets', ['Standard bracket', 'Long bracket', 'Aluminium substructure', 'Not required'])
+                        ],
+                        units: AREA, unit: 'm²'
+                    },
+                    {
+                        family: 'Rooflights, translucent sheets & smoke vents',
+                        desc: 'Polycarbonate and GRP sheets profiled to match the roof, modular skylights, sun tunnels and smoke and heat exhaust ventilators.',
+                        variantLabel: 'Choose the product',
+                        variants: ['Compact corrugated polycarbonate', 'Multiwall polycarbonate', 'Compact flat polycarbonate', 'GRP / fibreglass sheet', 'GRP / fibreglass roll', 'Modular polycarbonate skylight', 'Solarpipe-LUX sun tunnel', 'Smoke & heat vent — vertical', 'Smoke & heat vent — horizontal', 'Roof window'],
+                        formLabel: 'Matching roof profile',
+                        forms: ['Greca 76/18', 'Genus 900', 'Genus 950', 'Genus 1000 / UNI 1000', 'Genus 2000', 'UNI 5', 'UNI 28', 'Flat / not applicable'],
+                        fields: [
+                            sel('th', 'Thickness', ['0.8 mm', '1.0 mm', '1.2 mm', '1.5 mm', '2.0 mm', '10 mm', '16 mm', '20 mm', '25 mm', '32 mm']),
+                            txt('size', 'Sheet or opening size', 'e.g. 1000 × 3000 mm / 100 × 200 cm'),
+                            sel('act', 'Opening / actuation', ['Not applicable', 'Fixed', 'Manual', 'Pneumatic CO₂', 'Electric 24 V']),
+                            txt('cert', 'Certification required', 'e.g. EN 12101-2')
+                        ],
+                        units: AREA, unit: 'm²'
+                    },
+                    {
+                        family: 'Thermal & acoustic insulation',
+                        desc: 'Rock wool and glass wool boards, rolls and felts for roofs, walls, ceilings and facades.',
+                        variantLabel: 'Choose the product',
+                        variants: ['Durock Energy', 'Hardrock Energy', 'Airrock DD', 'Airrock HD Alu', 'Frontrock Max-E', 'Ceilingrock', '220 compressed panel', 'Acoustic 225 Plus', 'BAC CF Roofine E60 S', 'BAC CF N Roofine', 'Isover IBR K4+', 'Isover Calibel SBV 4+', 'Isover Mupan K4+', 'Isover Extrawall 4+'],
+                        formLabel: 'Application',
+                        forms: ['Roof', 'Wall', 'Facade', 'Ceiling', 'Floor', 'Partition'],
+                        fields: [
+                            sel('th', 'Thickness', PANEL_INS),
+                            txt('size', 'Board / roll size', 'e.g. 1000 × 600 mm'),
+                            txt('lambda', 'Required lambda or density', 'optional'),
+                            sel('face', 'Facing', ['Unfaced', 'Aluminium foil', 'Glass veil', 'Plasterboard bonded', 'Bitumen'])
+                        ],
+                        units: AREA, unit: 'm²'
+                    },
+                    {
+                        family: 'Rainwater goods & flashings',
+                        desc: 'Gutters, downpipes, valley flashings, outlets, bends, brackets and rainwater heads — folded to standard or custom developments.',
+                        titleMode: 'family', variantLabel: 'Choose the material', variantNote: 'Material',
+                        variants: ['Pre-painted galvanized steel', 'Galvanized steel', 'Aluminium', 'Copper 99.9 (EN 1172)', 'Stainless AISI 304', 'Rheinzink titanium zinc', 'PVC', 'Lead'],
+                        formLabel: 'Component',
+                        forms: ['Round gutter', 'Shaped / ogee gutter', 'Round downpipe', 'Square downpipe', 'Valley flashing — under tile', 'Valley flashing — over tile', 'Gutter outlet', 'Rainwater head / hopper', 'Bend (braga)', 'Swan neck / offset', 'Reducer / increaser', 'Gutter bracket', 'Downpipe collar', 'Gutter stop end', 'Corner piece — internal', 'Corner piece — external', 'Decorative chain downpipe', 'Custom folded flashing'],
+                        fields: [
+                            sel('size', 'Size / development', RWG_SIZES),
+                            sel('th', 'Thickness', ['0.6 mm', '0.8 mm', '1.0 mm', 'PVC — standard wall']),
+                            txt('ral', 'Colour (RAL)', 'e.g. RAL 8017 / mill finish'),
+                            txt('len', 'Length (m)', 'e.g. 2.00 / 3.00')
+                        ],
+                        units: LENGTH, unit: 'metres'
+                    },
+                    {
+                        family: 'Roof accessories',
+                        desc: 'Snow guards, bird stops, tile clips, chimney cowls, ventilated ridge systems, expansion joints and roof drains.',
+                        titleMode: 'family', variantLabel: 'Choose the material', variantNote: 'Material',
+                        variants: ['Pre-painted galvanized steel', 'Galvanized steel', 'Aluminium', 'Copper', 'Stainless AISI 304', 'Rheinzink titanium zinc', 'Plastic / membrane'],
+                        formLabel: 'Accessory',
+                        forms: ['Snow guard — standing seam', 'Snow guard — press-bent', 'Bird stop / comb filler', 'Tile clip / holder', 'Chimney cowl', 'Ventilated ridge roll', 'Expansion joint', 'Curved flashing', 'Press-bent ridge', 'Roof drain', 'Balcony / terrace drain', 'Anti-noise membrane', 'Timber batten'],
+                        fields: [
+                            txt('size', 'Size / dimension', 'e.g. Ø 100 mm, 2 m length'),
+                            txt('ral', 'Colour (RAL)', 'optional'),
+                            txt('profile', 'Matching roof profile', 'e.g. Genus 1000, standing seam')
+                        ],
+                        units: PCS, unit: 'pcs'
+                    },
+                    {
+                        family: 'Fixings & fasteners',
+                        desc: 'Screws, bolts, nails, rivets and sealing caps for profiled sheets, panels and sub-structures.',
+                        titleMode: 'family', variantLabel: 'Choose the material', variantNote: 'Material',
+                        variants: ['Zinc-plated steel', 'Stainless A2', 'Stainless A4', 'Aluminium'],
+                        formLabel: 'Fastener type',
+                        forms: ['Wood screw', 'Self-drilling screw for steel', 'Screw with EPDM washer (A16)', 'Bolt with nut', 'Large-head nail', 'Cap for trapezoidal sheet — sealed', 'Cap for trapezoidal sheet — unsealed', 'Blind rivet', 'Sealed blind rivet', 'Sealing washer'],
+                        fields: [
+                            txt('size', 'Size (Ø × L mm)', 'e.g. 6.3 × 50'),
+                            sel('head', 'Head / washer', ['Hex head', 'Pan head', 'Countersunk', 'With EPDM washer', 'Without washer', 'Painted head to RAL']),
+                            txt('ral', 'Head colour (RAL)', 'optional')
+                        ],
+                        units: PCS, unit: 'pcs'
+                    },
+                    {
+                        family: 'Sheet metal machinery & tools',
+                        desc: 'Folding and beading machines, swaging sets and power tools for on-site and workshop sheet metal work.',
+                        variantLabel: 'Choose the machine or tool',
+                        variants: ['Segment folding machine UK 100S', 'Manual folding machine', 'Manual beading machine', 'Pipe-swaging case set', 'Electric shears', 'Electric nibbler', 'Hand tool set'],
+                        formLabel: 'Supply basis',
+                        forms: ['Purchase — new', 'Rental — monthly', 'Rental — long term'],
+                        fields: [
+                            txt('cap', 'Working length / capacity', 'e.g. 1000 mm, 1.2 mm steel'),
+                            sel('power', 'Power supply', ['Manual', '230 V single phase', '400 V three phase', 'Battery'])
+                        ],
+                        units: PCS, unit: 'pcs'
+                    },
+                    {
+                        family: 'Prefabricated boxes & bathroom pods',
+                        desc: 'Site cabins, prefabricated boxes and factory-finished bathroom pods, for sale or rental.',
+                        variantLabel: 'Choose the unit',
+                        variants: ['Prefabricated box / site cabin', 'Prefabricated bathroom pod'],
+                        formLabel: 'Supply basis',
+                        forms: ['Purchase', 'Rental — monthly', 'Rental — long term'],
+                        fields: [
+                            txt('dim', 'External dimensions', 'e.g. 6.0 × 2.4 × 2.5 m'),
+                            sel('fit', 'Fit-out level', ['Shell only', 'Standard fit-out', 'Full fit-out with services', 'To be advised']),
+                            txt('qtyNote', 'Site / delivery location', 'e.g. Algiers, Algeria')
+                        ],
+                        units: PCS, unit: 'pcs'
+                    }
+                ]
+            },
+
+            /* ---------- Industrial Doors, Shutters & Security ---------- */
+            doors: {
+                kind: 'product',
+                label: 'Industrial Doors, Shutters & Security',
+                intro: 'Sectional doors and rolling shutters manufactured to the individual opening size, tested to EN 13241-1, with polyurethane-insulated panels and profiles, electrostatic powder-coated finishes, operators, safety equipment and spare parts.',
+                items: [
+                    {
+                        family: 'Insulated sectional doors',
+                        desc: '42 mm sandwich panels of steel sheet filled with polyurethane foam (42 kg/m³ density), 0.4/0.5 mm inner and outer skin. Windload up to Class 4, U ≈ 1.5 W/m²K, sound reduction ≈ 26 dB, air permeability and water penetration Class 3.',
+                        variantLabel: 'Choose the panel design',
+                        variants: ['Linear ribbed', 'Panelled / square', 'Flat', 'Single groove', 'Multi-groove', 'Top ribbed'],
+                        formLabel: 'Panel height',
+                        forms: ['480 mm panel (5.2 kg/m)', '600 mm panel (6.2 kg/m)'],
+                        fields: [
+                            txt('w', 'Clear opening width (mm)', 'e.g. 4000'),
+                            txt('h', 'Clear opening height (mm)', 'e.g. 4500'),
+                            sel('surf', 'Panel surface', ['Stucco embossed', 'Sandgrain', 'Smooth']),
+                            sel('ral', 'External colour', DOOR_RAL),
+                            sel('track', 'Track / lift type', ['Standard lift', 'Low headroom', 'High lift', 'Vertical lift', 'Following roof pitch', 'To be advised']),
+                            sel('op', 'Operation', DOOR_OP),
+                            sel('wind', 'Windload class required', WINDLOAD)
+                        ],
+                        units: PCS, unit: 'pcs'
+                    },
+                    {
+                        family: 'Glazed & full-vision sectional doors',
+                        desc: 'Aluminium-framed glazed sections, supplied as complete full-vision doors or combined with insulated panels. Certified windload Class 2 in full-vision configuration.',
+                        variantLabel: 'Choose the infill',
+                        variants: ['Single acrylic sheet 5 mm', 'Double acrylic sheet 3/9/3 mm', 'Perforated metal grid / mesh', 'Ventilation grille'],
+                        formLabel: 'Configuration',
+                        forms: ['Full-vision door — all glazed sections', 'Mixed — insulated panels + glazed sections', 'Single glazed section only'],
+                        fields: [
+                            txt('w', 'Clear opening width (mm)', 'e.g. 5000'),
+                            txt('h', 'Clear opening height (mm)', 'e.g. 5000'),
+                            txt('rows', 'Number of glazed rows', 'e.g. 3'),
+                            sel('ral', 'Frame colour', DOOR_RAL),
+                            sel('op', 'Operation', DOOR_OP)
+                        ],
+                        units: PCS, unit: 'pcs'
+                    },
+                    {
+                        family: 'Vision windows for sectional doors',
+                        desc: 'Framed windows fitted into insulated panels, supplied in horizontal or vertical arrangements.',
+                        variantLabel: 'Choose the window',
+                        variants: ['Rectangular 640 × 336 mm', 'Rectangular 610 × 203 mm', 'Rectangular 490 × 324 mm', 'Oval 670 × 345 mm', 'Square 310 × 310 mm', 'Round Ø 330 mm'],
+                        formLabel: 'Arrangement',
+                        forms: ['Horizontal layout', 'Vertical layout', 'To be advised'],
+                        fields: [
+                            txt('per', 'Windows per door', 'e.g. 3'),
+                            sel('glaz', 'Glazing', ['Single acrylic', 'Double acrylic', 'Clear', 'Tinted']),
+                            sel('ral', 'Frame colour', DOOR_RAL)
+                        ],
+                        units: PCS, unit: 'pcs'
+                    },
+                    {
+                        family: 'Pedestrian pass doors',
+                        desc: 'Pass door built into any sectional door and any panel type, with lock, handle and security key, automatic closing, magnetic switch, continuous rubber seals and a 27 mm low threshold.',
+                        variantLabel: 'Choose the door type',
+                        variants: ['Integrated pass door in sectional door', 'Separate personnel door'],
+                        formLabel: 'Hinge side (viewed from outside)',
+                        forms: ['Left hand', 'Right hand', 'To be advised'],
+                        fields: [
+                            txt('w', 'Pass door width (mm)', 'e.g. 900'),
+                            txt('h', 'Pass door height (mm)', 'e.g. 2000'),
+                            sel('lock', 'Lock', ['Three-point safety lock', 'Single-point lock', 'Panic bar', 'To be advised']),
+                            sel('thr', 'Threshold', ['Low threshold 27 mm', 'Standard threshold', 'No threshold']),
+                            sel('ral', 'Colour', DOOR_RAL)
+                        ],
+                        units: PCS, unit: 'pcs'
+                    },
+                    {
+                        family: 'Insulated rolling shutters',
+                        desc: 'Double-walled slat filled with polyurethane (57 kg/m³), 105/91 mm step, 0.4 mm sheet, minimum shaft Ø 159 mm. Steel version certified to 12000 mm width and Class 4 windload; aluminium version to 6000 × 6000 mm and Class 3.',
+                        variantLabel: 'Choose the slat material',
+                        variants: ['Galvanized steel double-wall slat (1.05 kg/m)', 'Aluminium double-wall slat (0.45 kg/m)'],
+                        formLabel: 'Configuration',
+                        forms: ['Regular speed', 'High speed', 'Normal winding', 'Reverse winding'],
+                        fields: [
+                            txt('w', 'Clear opening width (mm)', 'e.g. 6000'),
+                            txt('h', 'Clear opening height (mm)', 'e.g. 5000'),
+                            sel('ral', 'Colour', DOOR_RAL),
+                            sel('guide', 'Guide rails', ['1.5 mm steel guides', '2.0 mm steel guides', 'Powder-coated guides', 'To be advised']),
+                            sel('box', 'Shaft box', ['Three-sided galvanized box', 'Three-sided powder-coated box', 'No box required']),
+                            sel('op', 'Operation', DOOR_OP),
+                            sel('wind', 'Windload class required', WINDLOAD)
+                        ],
+                        units: PCS, unit: 'pcs'
+                    },
+                    {
+                        family: 'Single-skin rolling shutters',
+                        desc: 'Uninsulated roll-formed slats in galvanized steel or aluminium, solid or perforated, for commercial shopfronts, garages and industrial openings.',
+                        variantLabel: 'Choose the slat profile',
+                        variants: ['Wide steel slat — solid', 'Wide steel slat — perforated', 'Wide steel slat — curved', 'Medium steel slat — solid', 'Medium steel slat — perforated', 'Medium aluminium slat — solid', 'Medium aluminium slat — perforated', 'Narrow steel slat — solid', 'Narrow steel slat — perforated', 'Uninsulated double slat'],
+                        formLabel: 'Material & finish',
+                        forms: ['Galvanized steel — raw', 'Galvanized steel — powder coated', 'Aluminium — mill finish', 'Aluminium — powder coated'],
+                        fields: [
+                            txt('w', 'Clear opening width (mm)', 'e.g. 3500'),
+                            txt('h', 'Clear opening height (mm)', 'e.g. 3000'),
+                            sel('ral', 'Colour', DOOR_RAL),
+                            sel('op', 'Operation', DOOR_OP),
+                            sel('lock', 'Locking', ['Central floor lock', 'Side locks', 'Motor lock', 'None'])
+                        ],
+                        units: PCS, unit: 'pcs'
+                    },
+                    {
+                        family: 'Shutter windows & ventilation grilles',
+                        desc: 'Vision and ventilation inserts fitted into shutter slats, approximately 4 pieces per linear metre.',
+                        variantLabel: 'Choose the insert',
+                        variants: ['Window 130 × 60 mm', 'Ventilation grille 134 × 64 mm', 'Window 150 × 64 mm', 'Window 600 × 64 mm', 'Ventilation grille 600 × 64 mm'],
+                        formLabel: 'Slat type',
+                        forms: ['Double-wall insulated slat', 'Single-skin aluminium slat', 'Single-skin steel slat', 'To be advised'],
+                        fields: [
+                            txt('per', 'Inserts per door', 'e.g. 12'),
+                            txt('rows', 'Rows / position', 'e.g. 2 rows at mid height')
+                        ],
+                        units: PCS, unit: 'pcs'
+                    },
+                    {
+                        family: 'Shutter components & hardware',
+                        desc: 'Guides, boxes, shafts with welded flanged edges, bottom bars, wind-lock hooks and end caps.',
+                        titleMode: 'family', variantLabel: 'Choose the material / finish', variantNote: 'Material',
+                        variants: ['Galvanized steel', 'Powder-coated steel', 'Aluminium', 'Plastic / rubber'],
+                        formLabel: 'Component',
+                        forms: ['Guide rail — 1.5 mm', 'Guide rail — 2.0 mm', 'Guide support bracket', 'Three-sided shaft box', 'Shaft with welded flanged edges', 'Bottom bar', 'End caps', 'Wind-lock hook — two-side twin', 'Wind-lock hook — two-side T', 'Wind-lock hook — one-side L', 'Guide brush / rubber seal', 'Shaft bearing plate'],
+                        fields: [
+                            txt('size', 'Size / length', 'e.g. 3000 mm, Ø 159 mm'),
+                            sel('ral', 'Colour', DOOR_RAL),
+                            txt('per', 'Quantity per door', 'optional')
+                        ],
+                        units: PCS, unit: 'pcs'
+                    },
+                    {
+                        family: 'Operators, controls & safety equipment',
+                        desc: 'Motors, control gear and the safety devices required for powered and impulse-operated doors.',
+                        variantLabel: 'Choose the item',
+                        variants: ['Electric operator 230 V', 'Electric operator 400 V', 'Manual chain hoist', 'Manual crank operator', 'Spring-balanced manual gear', 'Control panel', 'Remote control set', 'Photocell set', 'Safety edge', 'Non-contact edge detector', 'Loop detector', 'Traffic light set'],
+                        formLabel: 'Door type',
+                        forms: ['Insulated sectional door', 'Glazed sectional door', 'Insulated rolling shutter', 'Single-skin rolling shutter', 'High-speed shutter'],
+                        fields: [
+                            sel('ctrl', 'Control mode', ['Dead-man control', 'Impulse control', 'Remote control', 'Automatic with sensors', 'To be advised']),
+                            txt('door', 'Door size served (W × H mm)', 'e.g. 4000 × 4500'),
+                            sel('power', 'Power supply', ['230 V single phase', '400 V three phase', 'Not applicable'])
+                        ],
+                        units: PCS, unit: 'pcs'
+                    },
+                    {
+                        family: 'Window & home security',
+                        desc: 'Folding security gates, removable window bars, security roller shutters and door security bars.',
+                        variantLabel: 'Choose the product',
+                        variants: ['Folding security gate', 'Detachable window bars', 'Security roller shutter', 'Door security bar'],
+                        formLabel: 'Material & finish',
+                        forms: ['Galvanized steel — powder coated', 'Galvanized steel — raw', 'Aluminium — powder coated', 'Wood-grain finish'],
+                        fields: [
+                            txt('w', 'Opening width (mm)', 'e.g. 1400'),
+                            txt('h', 'Opening height (mm)', 'e.g. 1600'),
+                            sel('ral', 'Colour', DOOR_RAL),
+                            sel('fix', 'Fixing', ['Face fixed', 'Reveal fixed', 'Built-in box', 'To be advised'])
+                        ],
+                        units: PCS, unit: 'pcs'
+                    },
+                    {
+                        family: 'Door spare parts & seals',
+                        desc: 'Springs, tracks, rollers, brackets, seals and safety fittings for maintenance and refurbishment.',
+                        titleMode: 'family', variantLabel: 'Choose the material / finish', variantNote: 'Material',
+                        variants: ['Galvanized steel', 'Powder-coated steel', 'Stainless steel', 'Rubber / plastic'],
+                        formLabel: 'Part',
+                        forms: ['Torsion spring', 'Spring-break safety device', 'Galvanized track set', 'Double adjustable roller', 'Adjustable bottom bracket', 'Hinge set', 'Intermediate brush seal', 'Bottom rubber seal', 'Side seal', 'Finger-protection panel', 'Release lock', 'Handle & lock set', 'Cable & drum set', 'Shaft bearing'],
+                        fields: [
+                            txt('size', 'Size / specification', 'e.g. spring for 4000 × 4500 door'),
+                            txt('per', 'Quantity per door', 'e.g. 2'),
+                            sel('ral', 'Colour if painted', DOOR_RAL)
+                        ],
+                        units: PCS, unit: 'pcs'
+                    }
+                ]
+            },
+
+            /* ---------- Flanges, Fittings & Valves ---------- */
+            fittings: {
+                kind: 'product',
+                label: 'Flanges, Fittings & Valves',
+                intro: 'Hydraulic tube and pipe fittings to the full ISO 8434 family and DIN 2353 — VL, L and T series up to 630 bar — plus butt-weld fittings, flanges and industrial valves.',
+                items: [
+                    {
+                        family: 'ISO 8434-1 — 24° Cutting Ring (DIN 2353)',
+                        desc: 'The 24° cone and progressive cutting ring bite onto the tube for a leak-tight metal connection. VL max 100 bar · L max 315 bar · T max 630 bar.',
+                        titleMode: 'family', variantLabel: 'Choose the material', variantNote: 'Material',
+                        variants: ['Steel, zinc-plated', 'Stainless steel 1.4571 / 316Ti', 'Stainless steel 1.4404 / 316L'],
+                        formLabel: 'Fitting type',
+                        forms: ['Straight coupling (G)', 'Male stud coupling (GE)', 'Male stud coupling, taper (GE-R)', '90° elbow (W)', 'Adjustable elbow (EW)', 'Equal tee (T)', 'Male stud tee (ET)', 'Cross (K)', 'Bulkhead coupling (SV)', 'Bulkhead elbow (WSV)', 'Reducer (R)', 'Union nut + cutting ring set', 'Blanking plug / cap', 'Weld-on coupling'],
+                        fields: [
+                            sel('series', 'Series', ['VL — very light (100 bar)', 'L — light (315 bar)', 'T — heavy (630 bar)']),
+                            sel('od', 'Tube OD', TUBE_OD),
+                            txt('wall', 'Tube wall (mm)', 'e.g. 1.5 / 2 / 3'),
+                            sel('thread', 'Port thread', THREADS),
+                            txt('threadsize', 'Thread size', 'e.g. M18x1.5, 1/2" BSPP')
+                        ],
+                        units: PCS, unit: 'pcs'
+                    },
+                    {
+                        family: 'ISO 8434-2 — JIC 37° Flare',
+                        desc: 'Three-part design (body · nut · sleeve) sealing on a 37° flare. Accepts metric and imperial tubing by changing the sleeve. Up to 350 bar PN.',
+                        titleMode: 'family', variantLabel: 'Choose the material', variantNote: 'Material',
+                        variants: ['Steel, zinc-plated', 'Stainless steel', 'Brass'],
+                        formLabel: 'Fitting type',
+                        forms: ['Male JIC straight', 'Female JIC swivel', '90° elbow', '45° elbow', 'Union tee', 'Run tee', 'Bulkhead union', 'Bulkhead elbow', 'Cap / plug', 'Sleeve only', 'Nut only', 'Nut + sleeve set'],
+                        fields: [
+                            sel('dash', 'JIC dash size', DASH),
+                            sel('od', 'Tube OD', TUBE_OD),
+                            txt('wall', 'Tube wall (mm)', 'e.g. 1.5 / 2'),
+                            sel('thread', 'Second end thread', THREADS.concat(['JIC 37° both ends']))
+                        ],
+                        units: PCS, unit: 'pcs'
+                    },
+                    {
+                        family: 'ISO 8434-3 — ORFS (O-Ring Face Seal)',
+                        desc: 'Face-seal system that eliminates leakage and allows higher operating pressures. One body covers several tube diameters via sleeve or braze-on spud.',
+                        titleMode: 'family', variantLabel: 'Choose the material', variantNote: 'Material',
+                        variants: ['Steel, zinc-plated', 'Stainless steel'],
+                        formLabel: 'Fitting type',
+                        forms: ['Male ORFS straight', 'Female ORFS swivel', '90° elbow', '45° elbow', 'Union tee', 'Bulkhead union', 'Braze-on spud', 'Flanged head', 'Cap / plug', 'O-ring only'],
+                        fields: [
+                            sel('dash', 'ORFS dash size', DASH),
+                            sel('od', 'Tube OD', TUBE_OD),
+                            txt('wall', 'Tube wall (mm)', 'e.g. 1.5 / 2'),
+                            sel('assembly', 'Assembly method', ['Orbital 90° flanging', 'Braze-on spud', 'To be advised']),
+                            sel('thread', 'Second end thread', THREADS)
+                        ],
+                        units: PCS, unit: 'pcs'
+                    },
+                    {
+                        family: 'ISO 8434-6 — Pipe Fittings & Thread Adapters',
+                        desc: 'Virtually every thread conversion: male and female fittings, male-to-female adapters, parallel-to-taper adapters and port blanking plugs.',
+                        titleMode: 'family', variantLabel: 'Choose the material', variantNote: 'Material',
+                        variants: ['Steel, zinc-plated', 'Stainless steel', 'Brass'],
+                        formLabel: 'Adapter type',
+                        forms: ['Male / male adapter', 'Male / female adapter', 'Female / female adapter', 'Parallel-to-taper adapter', '90° elbow adapter', 'Tee adapter', 'Cross adapter', 'Port blanking plug', 'Bonded seal / washer', 'Reducing bush', 'Hose tail'],
+                        fields: [
+                            sel('thread1', 'Thread — end 1', THREADS),
+                            txt('size1', 'Size — end 1', 'e.g. 1/2" BSPP'),
+                            sel('thread2', 'Thread — end 2', THREADS.concat(['Same as end 1', 'Not applicable'])),
+                            txt('size2', 'Size — end 2', 'e.g. M22x1.5')
+                        ],
+                        units: PCS, unit: 'pcs'
+                    },
+                    {
+                        family: 'Butt-weld pipe fittings',
+                        desc: 'Elbows, tees, reducers and caps to ASME B16.9 / EN 10253 for process and structural pipework.',
+                        titleMode: 'family', variantLabel: 'Choose the material', variantNote: 'Material',
+                        variants: ['Carbon steel ASTM A234 WPB', 'Stainless 304 / 304L', 'Stainless 316 / 316L', 'Duplex 2205'],
+                        formLabel: 'Fitting type',
+                        forms: ['90° elbow LR', '90° elbow SR', '45° elbow', 'Equal tee', 'Reducing tee', 'Concentric reducer', 'Eccentric reducer', 'Cap', 'Stub end', 'Pipe bend'],
+                        fields: [
+                            sel('size', 'Nominal size', DN_SIZES),
+                            sel('sched', 'Schedule / wall', SCHED),
+                            sel('standard', 'Standard', ['ASME B16.9', 'EN 10253-1', 'EN 10253-2', 'DIN 2605', 'To be advised'])
+                        ],
+                        units: PCS, unit: 'pcs'
+                    },
+                    {
+                        family: 'Flanges',
+                        desc: 'Weld neck, slip-on, blind and plate flanges in carbon, stainless and duplex to EN 1092-1 and ASME B16.5.',
+                        titleMode: 'family', variantLabel: 'Choose the material', variantNote: 'Material',
+                        variants: ['Carbon steel P250GH / A105', 'Stainless 304 / 304L', 'Stainless 316 / 316L', 'Duplex 2205'],
+                        formLabel: 'Flange type',
+                        forms: ['Weld neck (WN)', 'Slip-on (SO)', 'Blind', 'Plate / flat flange', 'Lap joint', 'Threaded', 'Socket weld', 'Loose flange with collar'],
+                        fields: [
+                            sel('size', 'Nominal size', DN_SIZES),
+                            sel('rating', 'Pressure class', CLASSES),
+                            sel('standard', 'Standard', ['EN 1092-1', 'ASME B16.5', 'ASME B16.47', 'DIN 2576', 'JIS B2220', 'To be advised']),
+                            sel('face', 'Facing', ['Raised face (RF)', 'Flat face (FF)', 'Ring type joint (RTJ)', 'Tongue & groove'])
+                        ],
+                        units: PCS, unit: 'pcs'
+                    },
+                    {
+                        family: 'Industrial valves',
+                        desc: 'Gate, globe, ball, butterfly and check valves for water, oil, gas and process lines.',
+                        titleMode: 'family', variantLabel: 'Choose the body material', variantNote: 'Body material',
+                        variants: ['Carbon steel / WCB', 'Stainless 304', 'Stainless 316', 'Ductile / cast iron', 'Brass / bronze'],
+                        formLabel: 'Valve type',
+                        forms: ['Gate valve', 'Globe valve', 'Ball valve — 2 piece', 'Ball valve — 3 piece', 'Butterfly valve — wafer', 'Butterfly valve — lug', 'Swing check valve', 'Wafer check valve', 'Needle valve', 'Y-strainer', 'Safety relief valve'],
+                        fields: [
+                            sel('size', 'Nominal size', DN_SIZES),
+                            sel('rating', 'Pressure class', CLASSES),
+                            sel('ends', 'End connection', ['Flanged', 'Threaded BSP', 'Threaded NPT', 'Butt weld', 'Socket weld', 'Wafer']),
+                            sel('operation', 'Operation', ['Handwheel', 'Lever', 'Gearbox', 'Electric actuator', 'Pneumatic actuator'])
+                        ],
+                        units: PCS, unit: 'pcs'
+                    }
+                ]
+            }
+        };
+
+        const INDUSTRY_KEYS = Object.keys(CATALOG).filter(k => CATALOG[k].kind === 'industry');
+
+        /* =========================================================
+           Helpers
+           ========================================================= */
+        const CART_KEY = 'rmetal_enquiry_cart_v1';
+        function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+        function cartItems() { try { const r = localStorage.getItem(CART_KEY); return r ? (JSON.parse(r).items || []) : []; } catch (e) { return []; } }
+
+        function countInCart(label, it) {
+            const items = cartItems();
+            if (it.titleMode === 'family') return items.filter(i => i.category === label && i.grade === it.family).length;
+            return items.filter(i => i.category === label && it.variants.indexOf(i.grade) !== -1).length;
+        }
+
+        /* automatic dimension fields for steel, based on product form */
+        function dimMode(form) {
+            const f = (form || '').toLowerCase();
+            if (/pipe|tube|chs/.test(f)) return 'tube';
+            if (/bulb flat/.test(f)) return 'bulb';
+            if (/bar|forging|rebar|rod/.test(f)) return 'bar';
+            if (/coil|sheet|plate|strip|blank|fin stock|lamination/.test(f)) return 'flat';
+            if (/beam|angle|channel|profile|shs|rhs|purlin|section|mesh/.test(f)) return 'section';
+            return 'other';
+        }
+        const DIM_FIELDS = {
+            flat:    { cols: 3, fields: [['th', 'Thickness (mm)', 'e.g. 3'], ['wd', 'Width (mm)', 'e.g. 1500'], ['ln', 'Length (mm)', 'e.g. 3000 / coil']] },
+            tube:    { cols: 3, fields: [['od', 'Outside Ø (mm)', 'e.g. 219.1'], ['wt', 'Wall (mm)', 'e.g. 6'], ['ln', 'Length (m)', 'e.g. 6 / 12']] },
+            bar:     { cols: 2, fields: [['dia', 'Diameter / size (mm)', 'e.g. 40 or 40x8'], ['ln', 'Length (m)', 'e.g. 6']] },
+            section: { cols: 2, fields: [['sec', 'Section / size', 'e.g. IPE 200, L 50x50x5'], ['ln', 'Length (m)', 'e.g. 12']] },
+            bulb:    { cols: 1, fields: [['ln', 'Length (m)', 'e.g. 6 / 12']] },
+            other:   { cols: 1, fields: [['free', 'Dimensions / specification', 'Describe the size you need']] }
+        };
+        function dimSummary(mode, v) {
+            const g = k => (v[k] || '').trim();
+            if (mode === 'flat') { const p = [g('th'), g('wd'), g('ln')].filter(Boolean); return p.length ? p.join(' × ') + ' mm' : ''; }
+            if (mode === 'tube') { const p = []; if (g('od')) p.push('OD ' + g('od') + ' mm'); if (g('wt')) p.push('WT ' + g('wt') + ' mm'); if (g('ln')) p.push('L ' + g('ln') + ' m'); return p.join(' × '); }
+            if (mode === 'bar') { const p = []; if (g('dia')) p.push('Ø ' + g('dia') + ' mm'); if (g('ln')) p.push('L ' + g('ln') + ' m'); return p.join(' · '); }
+            if (mode === 'section' || mode === 'bulb') { const p = []; if (g('sec')) p.push(g('sec')); if (g('ln')) p.push('L ' + g('ln') + ' m'); return p.join(' · '); }
+            return g('free');
+        }
+
+        function addLine(category, grade, noteParts, qty, unit) {
+            window.enqAddItem(category, grade, noteParts.filter(Boolean).join(' · '));
+            const items = cartItems();
+            const last = items[items.length - 1];
+            if (last) {
+                if (qty && typeof window.enqUpdateQty === 'function') window.enqUpdateQty(last.id, qty);
+                if (unit && typeof window.enqUpdateUnit === 'function') window.enqUpdateUnit(last.id, unit);
+            }
+        }
+
+        /* =========================================================
+           Custom enquiry — available from everywhere
+           ========================================================= */
+        window.rmCustomEnquiry = function (category) {
+            if (typeof window.enqOpenCart !== 'function') return;
+            window.enqOpenCart();
+            setTimeout(function () {
+                const box = document.getElementById('enqCustomBox');
+                if (box && !box.classList.contains('enq-show') && typeof window.enqToggleCustomForm === 'function') window.enqToggleCustomForm();
+                const cat = document.getElementById('enqCustCategory');
+                if (cat && category && !cat.value) cat.value = category;
+                const g = document.getElementById('enqCustGrade');
+                if (g) g.focus();
+                if (box) box.scrollIntoView({ block: 'nearest' });
+            }, 120);
+        };
+        function customBtn(category, text) {
+            return `<button type="button" class="rm-custom-btn" data-custom="${esc(category || '')}">${text || 'Custom enquiry'}</button>`;
+        }
+        function wireCustomBtns(root) {
+            root.querySelectorAll('[data-custom]').forEach(b => {
+                b.onclick = function (ev) { ev.stopPropagation(); window.rmCustomEnquiry(b.dataset.custom); };
+            });
+        }
+
+        /* =========================================================
+           Configurator modal
+           ========================================================= */
+        let cfgEl = null, cfgState = null, cfgAfterAdd = null;
+
+        function ensureModal() {
+            if (cfgEl) return cfgEl;
+            cfgEl = document.createElement('div');
+            cfgEl.className = 'enq-overlay';
+            cfgEl.id = 'cfgOverlay';
+            cfgEl.innerHTML = `<div class="enq-box cfg-box">
+                <div class="enq-box-hd">
+                    <div>
+                        <h3 id="cfgTitle"></h3>
+                        <p id="cfgSub" style="font-size:0.8rem;color:var(--grey-accent);margin-top:4px;"></p>
+                    </div>
+                    <button type="button" class="enq-box-close" id="cfgClose" aria-label="Close">&times;</button>
+                </div>
+                <div class="enq-box-bd" id="cfgBody"></div>
+                <div class="enq-box-ft cfg-ft">
+                    <button type="button" class="cfg-custom" id="cfgCustom" style="margin-right:auto;">Not listed? Custom enquiry</button>
+                    <button type="button" class="btn" id="cfgAgain" style="padding:10px 18px;font-size:0.72rem;">Add &amp; another size</button>
+                    <button type="button" class="btn btn-navy" id="cfgAdd" style="padding:10px 22px;font-size:0.72rem;">Add to enquiry</button>
+                </div>
+            </div>`;
+            document.body.appendChild(cfgEl);
+            cfgEl.querySelector('#cfgClose').onclick = closeCfg;
+            cfgEl.addEventListener('mousedown', e => { if (e.target === cfgEl) closeCfg(); });
+            cfgEl.querySelector('#cfgAdd').onclick = () => commitCfg(false);
+            cfgEl.querySelector('#cfgAgain').onclick = () => commitCfg(true);
+            cfgEl.querySelector('#cfgCustom').onclick = function () {
+                const cat = cfgState ? cfgState.spec.category : '';
+                closeCfg(); window.rmCustomEnquiry(cat);
+            };
+            return cfgEl;
+        }
+
+        function closeCfg() {
+            if (cfgEl) cfgEl.classList.remove('enq-open');
+            document.body.style.overflow = '';
+            cfgState = null;
+        }
+
+        window.rmOpenConfigurator = function (spec, onAdd) {
+            ensureModal();
+            cfgAfterAdd = onAdd || null;
+            cfgState = {
+                spec: spec,
+                variant: spec.variants.length === 1 ? spec.variants[0] : null,
+                form: (spec.forms && spec.forms[0]) || '',
+                dims: {}, vals: {}, qty: '',
+                unit: spec.unit || (spec.units ? spec.units[0] : 'ton'),
+                note: ''
+            };
+            cfgEl.querySelector('#cfgTitle').textContent = spec.family;
+            cfgEl.querySelector('#cfgSub').textContent = spec.category + (spec.desc ? ' — ' + spec.desc : '');
+            renderCfg();
+            cfgEl.classList.add('enq-open');
+            document.body.style.overflow = 'hidden';
+        };
+
+        function formOptions(forms, isProduct) {
+            const list = [];
+            (forms || []).forEach(f => { if (list.indexOf(f) === -1) list.push(f); });
+            if (!isProduct) EXTRA_FORMS.forEach(f => { if (list.indexOf(f) === -1) list.push(f); });
+            list.push('Other / to be advised');
+            return list;
+        }
+
+        function renderCfg() {
+            const st = cfgState, sp = st.spec;
+            const custom = !!(sp.fields && sp.fields.length);
+            const mode = dimMode(st.form);
+            const dm = DIM_FIELDS[mode];
+            const units = sp.units || UNITS;
+            const body = cfgEl.querySelector('#cfgBody');
+
+            const specHTML = custom
+                ? `<div class="cfg-fields">${sp.fields.map(f => f.type === 'select'
+                        ? `<div class="cfg-field"><small>${esc(f.label)}</small><select data-val="${esc(f.key)}"><option value="">— select —</option>${f.options.map(o => `<option value="${esc(o)}"${st.vals[f.key] === o ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select></div>`
+                        : `<div class="cfg-field"><small>${esc(f.label)}</small><input type="text" data-val="${esc(f.key)}" value="${esc(st.vals[f.key] || '')}" placeholder="${esc(f.placeholder || '')}"></div>`
+                    ).join('')}</div>`
+                : `<div class="cfg-dims cfg-dims-${dm.cols}">${dm.fields.map(f => `<div class="cfg-field"><small>${esc(f[1])}</small><input type="text" data-dim="${f[0]}" value="${esc(st.dims[f[0]] || '')}" placeholder="${esc(f[2])}"></div>`).join('')}</div>`;
+
+            body.innerHTML = `
+                <div class="cfg-sec">
+                    <label class="cfg-label">1. ${esc(sp.variantLabel || 'Choose the grade')} <span class="cfg-req">*</span></label>
+                    ${sp.variants.length > 1
+                        ? `<p class="cfg-hint">Only the option you select is added to the enquiry.</p>
+                           <div class="cfg-chips" id="cfgChips">
+                             ${sp.variants.map(v => `<button type="button" class="cfg-chip${st.variant === v ? ' cfg-on' : ''}" data-v="${esc(v)}">${esc(v)}</button>`).join('')}
+                           </div>`
+                        : `<span class="cfg-single">${esc(sp.variants[0])}</span>`}
+                </div>
+
+                <div class="cfg-sec">
+                    <label class="cfg-label" for="cfgForm">2. ${esc(sp.formLabel || 'Product form')}</label>
+                    <select id="cfgForm">
+                        ${formOptions(sp.forms, custom).map(f => `<option value="${esc(f)}"${f === st.form ? ' selected' : ''}>${esc(f)}</option>`).join('')}
+                    </select>
+                </div>
+
+                <div class="cfg-sec">
+                    <label class="cfg-label">3. ${custom ? 'Sizes &amp; connections' : 'Dimensions'}</label>
+                    <p class="cfg-hint">Leave blank if not yet fixed — we will quote against your drawing or parts list.</p>
+                    ${specHTML}
+                </div>
+
+                <div class="cfg-sec">
+                    <label class="cfg-label" for="cfgQty">4. Quantity <span class="cfg-req">*</span></label>
+                    <div class="cfg-qty">
+                        <input type="text" id="cfgQty" inputmode="decimal" value="${esc(st.qty)}" placeholder="${custom ? 'e.g. 200' : 'e.g. 25'}">
+                        <select id="cfgUnit">${units.map(u => `<option value="${u}"${u === st.unit ? ' selected' : ''}>${u}</option>`).join('')}</select>
+                    </div>
+                </div>
+
+                <div class="cfg-sec">
+                    <label class="cfg-label" for="cfgNote">5. Standard, surface or other notes</label>
+                    <textarea id="cfgNote" placeholder="${custom ? 'e.g. seals in FKM, test certificate, delivery to Gebze' : 'e.g. EN 10204 3.1 certificate, oiled surface, mill edge'}">${esc(st.note)}</textarea>
+                </div>
+
+                <div class="cfg-sec"><div class="cfg-preview" id="cfgPreview"></div></div>
+                <div id="cfgErr"></div>`;
+
+            body.querySelectorAll('.cfg-chip').forEach(ch => {
+                ch.onclick = () => {
+                    st.variant = ch.dataset.v;
+                    body.querySelectorAll('.cfg-chip').forEach(x => { x.classList.toggle('cfg-on', x === ch); x.classList.remove('cfg-field-error'); });
+                    updatePreview();
+                };
+            });
+            body.querySelector('#cfgForm').onchange = function () {
+                st.form = this.value;
+                if (!custom && dimMode(st.form) !== mode) st.dims = {};
+                renderCfg();
+            };
+            body.querySelectorAll('[data-dim]').forEach(i => { i.oninput = function () { st.dims[this.dataset.dim] = this.value; updatePreview(); }; });
+            body.querySelectorAll('[data-val]').forEach(i => {
+                const h = function () { st.vals[this.dataset.val] = this.value; updatePreview(); };
+                i.oninput = h; i.onchange = h;
+            });
+            body.querySelector('#cfgQty').oninput = function () { st.qty = this.value; this.classList.remove('cfg-field-error'); updatePreview(); };
+            body.querySelector('#cfgUnit').onchange = function () { st.unit = this.value; updatePreview(); };
+            body.querySelector('#cfgNote').oninput = function () { st.note = this.value; };
+            updatePreview();
+        }
+
+        /* build the descriptive parts of the line item */
+        function specParts() {
+            const st = cfgState, sp = st.spec;
+            const parts = [st.form];
+            if (sp.titleMode === 'family' && st.variant) parts.push((sp.variantNote || 'Option') + ': ' + st.variant);
+            if (sp.fields && sp.fields.length) {
+                sp.fields.forEach(f => {
+                    const v = (st.vals[f.key] || '').trim();
+                    if (v) parts.push(f.label + ': ' + v);
+                });
+            } else {
+                const d = dimSummary(dimMode(st.form), st.dims);
+                if (d) parts.push(d);
+            }
+            return parts;
+        }
+
+        function updatePreview() {
+            const st = cfgState; if (!st) return;
+            const title = st.spec.titleMode === 'family' ? st.spec.family : (st.variant || 'Select an option');
+            const parts = specParts().slice();
+            parts.push(st.qty ? `${st.qty} ${st.unit}` : 'quantity TBC');
+            cfgEl.querySelector('#cfgPreview').innerHTML = `<b>${esc(title)}</b> <span>— ${esc(parts.filter(Boolean).join(' · '))}</span>`;
+        }
+
+        function commitCfg(keepOpen) {
+            const st = cfgState; if (!st) return;
+            const errBox = cfgEl.querySelector('#cfgErr');
+            errBox.innerHTML = '';
+            if (!st.variant) {
+                errBox.innerHTML = '<p class="cfg-err">Please choose an option above.</p>';
+                cfgEl.querySelectorAll('.cfg-chip').forEach(c => c.classList.add('cfg-field-error'));
+                return;
+            }
+            const qtyEl = cfgEl.querySelector('#cfgQty');
+            if (!st.qty || !parseFloat(String(st.qty).replace(',', '.'))) {
+                errBox.innerHTML = '<p class="cfg-err">Please enter the quantity you need.</p>';
+                qtyEl.classList.add('cfg-field-error'); qtyEl.focus();
+                return;
+            }
+            const title = st.spec.titleMode === 'family' ? st.spec.family : st.variant;
+            addLine(st.spec.category, title, specParts().concat([st.note]), st.qty, st.unit);
+            if (typeof cfgAfterAdd === 'function') cfgAfterAdd();
+            if (keepOpen) { st.dims = {}; st.vals = {}; st.qty = ''; renderCfg(); }
+            else closeCfg();
+        }
+
+        /* =========================================================
+           Dropdown panels (industry cards + product cards)
+           ========================================================= */
+        let openKey = null, panel = null;
+
+        function closePanel() {
+            if (panel) { panel.remove(); panel = null; }
+            document.querySelectorAll('.ind-card, .non-steel-card').forEach(c => { c.classList.remove('ind-open'); c.setAttribute('aria-expanded', 'false'); });
+            openKey = null;
+        }
+
+        function insertAfterRow(card, el) {
+            const grid = card.parentElement;
+            const cards = Array.from(grid.children).filter(c => c !== el && !c.classList.contains('ind-panel'));
+            const top = card.offsetTop;
+            let last = card;
+            cards.forEach(c => { if (Math.abs(c.offsetTop - top) < 6) last = c; });
+            last.after(el);
+        }
+
+        function rowHTML(cfg, it, i) {
+            const n = countInCart(cfg.label, it);
+            const many = it.variants.length > 1;
+            const optLabel = it.titleMode === 'family' ? (it.variantNote || 'options') : 'grades';
+            return `<li class="ind-grade-row" data-idx="${i}" data-search="${esc((it.family + ' ' + it.variants.join(' ') + ' ' + it.desc + ' ' + it.forms.join(' ')).toLowerCase())}">
+                <div class="ind-grade-info">
+                    <span class="ind-grade-code">${esc(it.family)}</span><span class="ind-count${n ? '' : ' enq-hidden'}" data-count>${n} in enquiry</span>
+                    <div class="ind-grade-desc">${esc(it.desc)}</div>
+                    <div class="ind-grade-form">${esc(it.forms.slice(0, 6).join(' · '))}${it.forms.length > 6 ? ' · +' + (it.forms.length - 6) + ' more' : ''}</div>
+                    ${many ? `<div class="ind-variant-hint">${it.variants.length} ${esc(optLabel.toLowerCase())} to choose from: ${esc(it.variants.slice(0, 3).join(', '))}${it.variants.length > 3 ? '…' : ''}</div>` : ''}
+                </div>
+                <button type="button" class="enq-add-btn ind-add-btn" data-idx="${i}">Specify &amp; add</button>
+            </li>`;
+        }
+
+        function refreshCounts(el, cfg) {
+            el.querySelectorAll('.ind-grade-row').forEach(row => {
+                const it = cfg.items[+row.dataset.idx];
+                const badge = row.querySelector('[data-count]');
+                const n = countInCart(cfg.label, it);
+                badge.textContent = n + ' in enquiry';
+                badge.classList.toggle('enq-hidden', n === 0);
+            });
+        }
+
+        function specFor(cfg, it) {
+            return {
+                category: cfg.label, family: it.family, desc: it.desc,
+                variants: it.variants, variantLabel: it.variantLabel, variantNote: it.variantNote,
+                titleMode: it.titleMode || 'variant',
+                formLabel: it.formLabel, forms: it.forms, fields: it.fields,
+                units: it.units, unit: it.unit
+            };
+        }
+
+        function buildPanel(key) {
+            const cfg = CATALOG[key];
+            const el = document.createElement('div');
+            el.className = 'ind-panel';
+            el.setAttribute('role', 'region');
+            el.innerHTML = `
+                <div class="ind-panel-hd">
+                    <div>
+                        <h3>${esc(cfg.label)}</h3>
+                        <p>${esc(cfg.intro)}</p>
+                    </div>
+                    <div class="ind-panel-hd-actions">
+                        <button type="button" class="ind-panel-close" aria-label="Close">&times;</button>
+                    </div>
+                </div>
+                <div class="ind-panel-tools">
+                    <input type="text" class="ind-search" placeholder="Filter ${esc(cfg.label)}…" aria-label="Filter list">
+                </div>
+                <ul class="ind-grade-list">${cfg.items.map((it, i) => rowHTML(cfg, it, i)).join('')}</ul>
+                <div class="ind-no-match enq-hidden">Nothing matches that search — send us a custom enquiry instead.</div>
+                <div class="ind-panel-ft">
+                    <span>${cfg.items.length} ${cfg.kind === 'industry' ? 'grade families' : 'product families'} &middot; other sizes, materials and standards available on request</span>
+                    ${customBtn(cfg.label, 'Custom enquiry')}
+                </div>`;
+
+            el.querySelector('.ind-panel-close').onclick = closePanel;
+
+            el.querySelector('.ind-search').addEventListener('input', function () {
+                const q = this.value.trim().toLowerCase();
+                let shown = 0;
+                el.querySelectorAll('.ind-grade-row').forEach(r => {
+                    const hit = !q || r.dataset.search.indexOf(q) !== -1;
+                    r.style.display = hit ? '' : 'none';
+                    if (hit) shown++;
+                });
+                el.querySelector('.ind-no-match').classList.toggle('enq-hidden', shown > 0);
+            });
+
+            el.querySelectorAll('.ind-add-btn').forEach(btn => {
+                btn.onclick = function (ev) {
+                    ev.stopPropagation();
+                    const it = cfg.items[+btn.dataset.idx];
+                    window.rmOpenConfigurator(specFor(cfg, it), () => refreshCounts(el, cfg));
+                };
+            });
+            wireCustomBtns(el);
+            return el;
+        }
+
+        function openCard(card, key) {
+            if (!CATALOG[key]) return;
+            if (openKey === key) { closePanel(); return; }
+            closePanel();
+            openKey = key;
+            card.classList.add('ind-open');
+            card.setAttribute('aria-expanded', 'true');
+            panel = buildPanel(key);
+            insertAfterRow(card, panel);
+            const y = panel.getBoundingClientRect().top + window.pageYOffset - 110;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+
+        /* =========================================================
+           Materials & Typical Grades accordion, built from CATALOG
+           ========================================================= */
+        function buildAccordion() {
+            const acc = document.getElementById('gradeAccordion');
+            if (!acc) return;
+            acc.innerHTML = INDUSTRY_KEYS.map((key, n) => {
+                const cfg = CATALOG[key];
+                const lis = cfg.items.map((it, i) => `<li data-fam="${esc(key)}" data-idx="${i}"><span><strong>${esc(it.family)}</strong> &ndash; ${esc(it.desc)}<br><span style="font-size:0.8rem;color:var(--grey-accent);">${esc(it.variants.join(' · '))}</span></span></li>`).join('');
+                return `<div class="acc-item">
+                    <div class="acc-header" onclick="toggleAcc(this)">${n + 1}. ${esc(cfg.label)} <span>+</span></div>
+                    <div class="acc-content"><ul>${lis}</ul></div>
+                </div>`;
+            }).join('');
+        }
+        buildAccordion();
+
+        function wireAccordionButtons() {
+            document.querySelectorAll('.acc-content li[data-fam]').forEach(li => {
+                const btn = li.querySelector('.enq-add-btn');
+                if (!btn) return;
+                const cfg = CATALOG[li.dataset.fam];
+                const it = cfg.items[+li.dataset.idx];
+                btn.textContent = 'Specify & add';
+                btn.onclick = function (ev) { ev.stopPropagation(); window.rmOpenConfigurator(specFor(cfg, it)); };
+            });
+        }
+
+        /* =========================================================
+           Product cards ("Additional Products & Supplies")
+           ========================================================= */
+        function wireProductCards() {
+            document.querySelectorAll('.non-steel-card').forEach(card => {
+                const key = card.dataset.group;
+                const actions = card.querySelector('.enq-card-actions');
+                const title = (card.querySelector('h4') || {}).textContent || 'Additional products';
+
+                if (key && CATALOG[key]) {
+                    card.setAttribute('role', 'button');
+                    card.setAttribute('tabindex', '0');
+                    card.setAttribute('aria-expanded', 'false');
+                    card.style.cursor = 'pointer';
+                    const addBtn = actions ? actions.querySelector('.enq-add-btn') : null;
+                    if (addBtn) {
+                        addBtn.textContent = 'View ' + CATALOG[key].items.length + ' product families';
+                        addBtn.onclick = function (ev) { ev.stopPropagation(); openCard(card, key); };
+                    }
+                    card.addEventListener('click', function (ev) {
+                        if (ev.target.closest('button') || ev.target.closest('a')) return;
+                        openCard(card, key);
+                    });
+                    card.addEventListener('keydown', function (e) {
+                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCard(card, key); }
+                    });
+                }
+                if (actions && !actions.querySelector('[data-custom]')) {
+                    const b = document.createElement('button');
+                    b.type = 'button';
+                    b.className = 'rm-custom-btn';
+                    b.dataset.custom = title.trim();
+                    b.textContent = 'Custom enquiry';
+                    actions.appendChild(b);
+                    wireCustomBtns(actions);
+                }
+            });
+        }
+
+        /* Standalone "custom enquiry" call-to-action blocks */
+        function addCustomCTAs() {
+            const specs = [
+                { after: '#indGrid', cat: 'Custom steel enquiry', text: "Working with a grade or size that isn't listed? Send us the specification and we will source it." },
+                { after: '#nonSteelGrid', cat: 'Flanges, Fittings & Valves', text: 'Need a fitting, flange or valve to a drawing or parts list? Send it over and we will quote it.' }
+            ];
+            specs.forEach(s => {
+                const grid = document.querySelector(s.after);
+                if (!grid || grid.parentElement.querySelector('.rm-custom-cta[data-for="' + s.after + '"]')) return;
+                const box = document.createElement('div');
+                box.className = 'rm-custom-cta';
+                box.setAttribute('data-for', s.after);
+                box.innerHTML = `<p>${esc(s.text)}</p>${customBtn(s.cat, 'Custom enquiry')}`;
+                grid.after(box);
+                wireCustomBtns(box);
+            });
+        }
+
+        /* =========================================================
+           Wire up
+           ========================================================= */
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('#indGrid .ind-card').forEach(card => {
+                card.addEventListener('click', () => openCard(card, card.dataset.industry));
+                card.addEventListener('keydown', e => {
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCard(card, card.dataset.industry); }
+                });
+            });
+            wireAccordionButtons();
+            wireProductCards();
+            addCustomCTAs();
+            wireCustomBtns(document);
+
+            document.addEventListener('keydown', e => {
+                if (e.key !== 'Escape') return;
+                if (cfgEl && cfgEl.classList.contains('enq-open')) { closeCfg(); return; }
+                if (panel) closePanel();
+            });
+            window.addEventListener('resize', () => {
+                if (panel && openKey) {
+                    const c = document.querySelector(`.ind-card[data-industry="${openKey}"], .non-steel-card[data-group="${openKey}"]`);
+                    if (c) insertAfterRow(c, panel);
+                }
+            });
+        });
+    })();
     </script>
 </body>
 </html>
