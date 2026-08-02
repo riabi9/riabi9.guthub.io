@@ -52,9 +52,15 @@
         header { background-color: var(--white); border-bottom: 2px solid var(--silver-light); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .nav-container { display: flex; justify-content: space-between; align-items: center; height: 90px; }
         .logo img { height: 70px; width: auto; }
-        .nav-links { display: flex; gap: 30px; list-style: none; }
-        .nav-links a { font-family: var(--font-head); font-weight: 600; font-size: 0.95rem; text-transform: uppercase; color: var(--ocean-navy); transition: var(--transition); }
-        .nav-links a:hover { color: var(--grey-accent); }
+        .header-actions { display: flex; align-items: center; gap: 18px; }
+        @media (max-width: 600px) {
+            .nav-container { height: 64px; }
+            .logo img { height: 42px; }
+            .header-actions { gap: 8px; }
+            .lang-switch-btn { padding: 6px 8px; font-size: 0.7rem; gap: 4px; }
+            .lang-switch-code { display: none; }
+            .enq-nav-cart-btn { padding: 7px 10px; font-size: 0.68rem; gap: 5px; }
+        }
         
         /* Hero */
         .hero { position: relative; height: 85vh; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--white); }
@@ -208,7 +214,6 @@
         /* Responsive */
         @media (max-width: 900px) {
             .split-grid, .contact-wrapper, .ind-grid { grid-template-columns: 1fr; }
-            .nav-links { display: none; } /* Keeping simple for static file, would use JS menu normally */
             .hero h1 { font-size: 2.5rem; }
         }
 
@@ -343,13 +348,55 @@
         .enq-toast { background: var(--ocean-navy); color: #fff; padding: 12px 18px; border-radius: 8px; font-size: 0.85rem; box-shadow: 0 6px 20px rgba(0,0,0,0.3); animation: enqToastIn 0.25s ease; }
         @keyframes enqToastIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* ============================================================
+           INTRO PRELOADER
+           ============================================================ */
+        #rmPreloader { position: fixed; inset: 0; background: var(--white); z-index: 99999; display: flex; align-items: center; justify-content: center; transition: opacity 0.5s ease; }
+        #rmPreloader.rm-preloader-hide { opacity: 0; pointer-events: none; }
+        #rmPreloaderLogo { width: clamp(130px, 26vw, 230px); height: auto; opacity: 0; animation: rmFadeIn 0.5s ease forwards; transition: transform 0.85s cubic-bezier(0.65,0,0.35,1); will-change: transform; }
+        @keyframes rmFadeIn { to { opacity: 1; } }
+        #headerLogo { transition: opacity 0.4s ease 0.05s; }
+        body.rm-intro-active #headerLogo { opacity: 0; }
+        @media (prefers-reduced-motion: reduce) {
+            #rmPreloaderLogo { transition: none; animation: none; opacity: 1; }
+            #rmPreloader { transition: opacity 0.2s linear; }
+        }
+
+        /* ============================================================
+           SIDE SECTION NAV (About / Products / Industries / Why Us / Contact)
+           ============================================================ */
+        .side-nav { position: fixed; left: 22px; top: 50%; transform: translateY(-50%); z-index: 900; display: flex; flex-direction: column; gap: 22px; }
+        .side-nav-item { display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 6px 4px; margin: -6px -4px; border-radius: 6px; }
+        .side-nav-dash { width: 22px; height: 2px; background: var(--silver-metallic); transition: var(--transition); flex-shrink: 0; }
+        .side-nav-label { font-family: var(--font-head); font-weight: 700; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--ocean-navy); white-space: nowrap; max-width: 0; overflow: hidden; opacity: 0; border-radius: 4px; background: transparent; transition: max-width 0.35s ease, opacity 0.25s ease, background 0.25s ease, padding 0.25s ease; }
+        @media (hover: hover) {
+            .side-nav-item:hover .side-nav-dash { width: 38px; background: var(--ocean-navy); }
+            .side-nav-item:hover .side-nav-label { max-width: 220px; opacity: 1; padding: 5px 10px; background: rgba(255,255,255,0.94); box-shadow: 0 4px 14px rgba(10,25,47,0.12); }
+        }
+        .side-nav-item:focus-visible { outline: 2px solid var(--ocean-navy); outline-offset: 3px; }
+        .side-nav-item.side-nav-active .side-nav-dash { width: 40px; background: var(--ocean-navy); }
+        .side-nav-item.side-nav-active .side-nav-label { max-width: 220px; opacity: 1; padding: 5px 10px; background: rgba(255,255,255,0.94); box-shadow: 0 4px 14px rgba(10,25,47,0.12); font-size: 0.76rem; }
+        @media (max-width: 900px) {
+            .side-nav { left: 10px; gap: 17px; }
+            .side-nav-dash { width: 15px; }
+            .side-nav-item.side-nav-active .side-nav-dash { width: 26px; }
+            .side-nav-label { font-size: 0.6rem; }
+            .side-nav-item.side-nav-active .side-nav-label { font-size: 0.64rem; padding: 4px 8px; }
+        }
+        html[dir="rtl"] .side-nav { left: auto; right: 22px; }
+        html[dir="rtl"] .side-nav-item { flex-direction: row-reverse; }
+        @media (max-width: 900px) { html[dir="rtl"] .side-nav { right: 10px; left: auto; } }
+        @media (prefers-reduced-motion: reduce) {
+            .side-nav-dash, .side-nav-label { transition: none; }
+        }
+
         /* Nearly-invisible admin dot in footer (secondary hidden access) */
         .enq-admin-dot { display: inline-block; width: 7px; height: 7px; margin-left: 10px; border-radius: 50%; background: currentColor; opacity: 0.15; cursor: default; vertical-align: middle; }
 
         /* ============================================================
            LANGUAGE SWITCHER
            ============================================================ */
-        .lang-switch { position: relative; margin-left: 18px; }
+        .lang-switch { position: relative; }
         .lang-switch-btn { display: flex; align-items: center; gap: 6px; background: var(--white); border: 1.5px solid var(--silver-light); color: var(--ocean-navy); padding: 8px 12px; border-radius: 22px; cursor: pointer; font-family: var(--font-head); font-weight: 700; font-size: 0.8rem; transition: var(--transition); }
         .lang-switch-btn:hover { border-color: var(--silver-metallic); }
         .lang-switch-code { letter-spacing: 0.4px; }
@@ -363,7 +410,6 @@
         .lang-switch-menu li.lang-active { background: var(--ocean-navy); color: #fff; font-weight: 600; }
         .lang-flag { font-size: 1.1rem; line-height: 1; }
         @media (max-width: 900px) {
-            .lang-switch { margin-left: auto; }
             .lang-switch-menu { right: 0; left: auto; }
         }
 
@@ -371,8 +417,6 @@
            RTL (Arabic) adjustments
            ============================================================ */
         html[dir="rtl"] body { text-align: right; }
-        html[dir="rtl"] .nav-links { direction: rtl; }
-        html[dir="rtl"] .lang-switch { margin-left: 0; margin-right: 18px; }
         html[dir="rtl"] .lang-switch-menu { right: auto; left: 0; }
         html[dir="rtl"] .split-text h3, html[dir="rtl"] .section-title[style*="text-align: left"] { text-align: right; }
         html[dir="rtl"] .contact-item strong { margin-left: 8px; margin-right: 0; }
@@ -386,6 +430,67 @@
     </style>
 </head>
 <body>
+
+    <!-- ============================================================
+         INTRO PRELOADER — white screen, centered logo, slides into
+         its header position on load. See script right below.
+         ============================================================ -->
+    <div id="rmPreloader" aria-hidden="true">
+        <img id="rmPreloaderLogo" src="ChatGPT Image Jul 30, 2026, 09_06_38 PM.png" alt="">
+    </div>
+    <script>
+    (function () {
+        var preloader = document.getElementById('rmPreloader');
+        var pLogo = document.getElementById('rmPreloaderLogo');
+        if (!preloader || !pLogo) return;
+
+        var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var skip = false;
+        try { skip = sessionStorage.getItem('rm_intro_played') === '1'; } catch (e) {}
+
+        if (skip || reduceMotion) {
+            preloader.style.display = 'none';
+            try { sessionStorage.setItem('rm_intro_played', '1'); } catch (e) {}
+            return;
+        }
+
+        document.documentElement.style.overflow = 'hidden';
+        document.body.classList.add('rm-intro-active');
+
+        function finishIntro() {
+            preloader.classList.add('rm-preloader-hide');
+            document.documentElement.style.overflow = '';
+            document.body.classList.remove('rm-intro-active');
+            setTimeout(function () { preloader.style.display = 'none'; }, 520);
+        }
+
+        function playIntro() {
+            var realLogo = document.getElementById('headerLogo');
+            if (!realLogo) { finishIntro(); return; }
+            var fromRect = pLogo.getBoundingClientRect();
+            var toRect = realLogo.getBoundingClientRect();
+            var scale = toRect.width / fromRect.width;
+            var dx = (toRect.left + toRect.width / 2) - (fromRect.left + fromRect.width / 2);
+            var dy = (toRect.top + toRect.height / 2) - (fromRect.top + fromRect.height / 2);
+            pLogo.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + scale + ')';
+            var done = false;
+            pLogo.addEventListener('transitionend', function onEnd(ev) {
+                if (ev.propertyName !== 'transform' || done) return;
+                done = true;
+                pLogo.removeEventListener('transitionend', onEnd);
+                finishIntro();
+            });
+            setTimeout(function () { if (!done) { done = true; finishIntro(); } }, 1500);
+        }
+
+        function start() { setTimeout(playIntro, 550); }
+
+        if (document.readyState === 'complete') start();
+        else window.addEventListener('load', start);
+
+        try { sessionStorage.setItem('rm_intro_played', '1'); } catch (e) {}
+    })();
+    </script>
 
     <!-- ============================================================
          LANGUAGE / TRANSLATION ENGINE
@@ -750,35 +855,96 @@
     <header>
         <div class="container nav-container">
             <a href="#" class="logo">
-                <img src="ChatGPT Image Jul 30, 2026, 09_06_38 PM.png" alt="R-METAL Logo">
+                <img id="headerLogo" src="ChatGPT Image Jul 30, 2026, 09_06_38 PM.png" alt="R-METAL Logo">
             </a>
-            <div class="lang-switch" id="langSwitch">
-                <button type="button" class="lang-switch-btn" id="langSwitchBtn" aria-haspopup="listbox" aria-expanded="false">
-                    <span id="langSwitchFlag">🇬🇧</span><span class="lang-switch-code" id="langSwitchCode">EN</span><span class="lang-switch-arrow">▾</span>
-                </button>
-                <ul class="lang-switch-menu" id="langSwitchMenu" role="listbox">
-                    <li role="option" data-lang="en"><span class="lang-flag">🇬🇧</span> English</li>
-                    <li role="option" data-lang="fr"><span class="lang-flag">🇫🇷</span> Français</li>
-                    <li role="option" data-lang="de"><span class="lang-flag">🇩🇪</span> Deutsch</li>
-                    <li role="option" data-lang="es"><span class="lang-flag">🇪🇸</span> Español</li>
-                    <li role="option" data-lang="it"><span class="lang-flag">🇮🇹</span> Italiano</li>
-                    <li role="option" data-lang="ar"><span class="lang-flag">🇸🇦</span> العربية</li>
-                </ul>
+            <div class="header-actions">
+                <div class="lang-switch" id="langSwitch">
+                    <button type="button" class="lang-switch-btn" id="langSwitchBtn" aria-haspopup="listbox" aria-expanded="false">
+                        <span id="langSwitchFlag">🇬🇧</span><span class="lang-switch-code" id="langSwitchCode">EN</span><span class="lang-switch-arrow">▾</span>
+                    </button>
+                    <ul class="lang-switch-menu" id="langSwitchMenu" role="listbox">
+                        <li role="option" data-lang="en"><span class="lang-flag">🇬🇧</span> English</li>
+                        <li role="option" data-lang="fr"><span class="lang-flag">🇫🇷</span> Français</li>
+                        <li role="option" data-lang="de"><span class="lang-flag">🇩🇪</span> Deutsch</li>
+                        <li role="option" data-lang="es"><span class="lang-flag">🇪🇸</span> Español</li>
+                        <li role="option" data-lang="it"><span class="lang-flag">🇮🇹</span> Italiano</li>
+                        <li role="option" data-lang="ar"><span class="lang-flag">🇸🇦</span> العربية</li>
+                    </ul>
+                </div>
+                <a href="#" class="enq-nav-cart-btn enq-empty" id="enqNavBtn" onclick="enqOpenCart();return false;">
+                    <span data-i18n="nav_enquiry">Enquiry</span> <span class="enq-badge" id="enqNavBadge">0</span>
+                </a>
             </div>
-            <ul class="nav-links">
-                <li><a href="#about" data-i18n="nav_about">About</a></li>
-                <li><a href="#products" data-i18n="nav_products">Products & Grades</a></li>
-                <li><a href="#industries" data-i18n="nav_industries">Industries</a></li>
-                <li><a href="#why-us" data-i18n="nav_whyus">Why Us</a></li>
-                <li><a href="#contact" onclick="return rmShowContact(event)" data-i18n="nav_contact">Contact</a></li>
-                <li>
-                    <a href="#" class="enq-nav-cart-btn enq-empty" id="enqNavBtn" onclick="enqOpenCart();return false;">
-                        <span data-i18n="nav_enquiry">Enquiry</span> <span class="enq-badge" id="enqNavBadge">0</span>
-                    </a>
-                </li>
-            </ul>
         </div>
     </header>
+
+    <!-- ============================================================
+         SIDE SECTION NAV — fixed on the left edge; each item is a
+         short dash that expands into its section name on hover, and
+         stays expanded while its section is the one in view.
+         ============================================================ -->
+    <nav class="side-nav" id="sideNav" aria-label="Section navigation">
+        <a href="#about" class="side-nav-item" data-target="about">
+            <span class="side-nav-dash"></span><span class="side-nav-label" data-i18n="nav_about">About</span>
+        </a>
+        <a href="#products" class="side-nav-item" data-target="products">
+            <span class="side-nav-dash"></span><span class="side-nav-label" data-i18n="nav_products">Products & Grades</span>
+        </a>
+        <a href="#industries" class="side-nav-item" data-target="industries">
+            <span class="side-nav-dash"></span><span class="side-nav-label" data-i18n="nav_industries">Industries</span>
+        </a>
+        <a href="#why-us" class="side-nav-item" data-target="why-us">
+            <span class="side-nav-dash"></span><span class="side-nav-label" data-i18n="nav_whyus">Why Us</span>
+        </a>
+        <a href="#contact" class="side-nav-item" data-target="contact" id="sideNavContact">
+            <span class="side-nav-dash"></span><span class="side-nav-label" data-i18n="nav_contact">Contact</span>
+        </a>
+    </nav>
+    <script>
+    (function () {
+        var items = Array.prototype.slice.call(document.querySelectorAll('.side-nav-item'));
+        if (!items.length) return;
+        var HEADER_OFFSET = 110;
+
+        function scrollToTarget(id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            var y = el.getBoundingClientRect().top + window.pageYOffset - HEADER_OFFSET;
+            window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+        }
+
+        items.forEach(function (item) {
+            item.addEventListener('click', function (ev) {
+                var id = item.getAttribute('data-target');
+                ev.preventDefault();
+                if (id === 'contact' && typeof window.rmShowContact === 'function') {
+                    window.rmShowContact();
+                } else {
+                    scrollToTarget(id);
+                }
+            });
+        });
+
+        function setActive(id) {
+            items.forEach(function (item) {
+                item.classList.toggle('side-nav-active', item.getAttribute('data-target') === id);
+            });
+        }
+
+        if ('IntersectionObserver' in window) {
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) setActive(entry.target.id);
+                });
+            }, { rootMargin: '-35% 0px -55% 0px', threshold: 0 });
+
+            items.forEach(function (item) {
+                var sec = document.getElementById(item.getAttribute('data-target'));
+                if (sec) observer.observe(sec);
+            });
+        }
+    })();
+    </script>
 
 
     <!-- Hero -->
